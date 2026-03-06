@@ -580,25 +580,25 @@ body::after {
   <div class="logo">Mind<span>Vault</span></div>
   <div class="header-right">
     <div class="stats-pill">
-      <span>рџ“љ <strong id="totalCount">0</strong></span>
+      <span>📚 <strong id="totalCount">0</strong></span>
     </div>
-    <button class="hdr-btn" id="apiKeyBtn" title="API РљР»СЋС‡" onclick="resetApiKey()">рџ”‘</button>
-  <button class="hdr-btn" id="exportBtn" title="Р­РєСЃРїРѕСЂС‚">в¬‡</button>
+    <button class="hdr-btn" id="apiKeyBtn" title="API Ключ" onclick="resetApiKey()">🔑</button>
+  <button class="hdr-btn" id="exportBtn" title="Экспорт">⬇</button>
   </div>
 </header>
 
 <!-- SEARCH -->
 <div class="search-wrap" id="mainSearch">
   <div class="search-box">
-    <span class="search-icon">рџ”Ќ</span>
-    <input class="search-inp" id="searchInp" placeholder="РЎРїСЂРѕСЃРё Рѕ СЃРІРѕРёС… Р·РЅР°РЅРёСЏС…..." />
-    <button class="search-clear" id="searchClear">вњ•</button>
+    <span class="search-icon">🔍</span>
+    <input class="search-inp" id="searchInp" placeholder="Спроси о своих знаниях..." />
+    <button class="search-clear" id="searchClear">✕</button>
   </div>
 </div>
 
 <!-- AI ANSWER -->
 <div class="ai-answer" id="aiAnswer">
-  <div class="ai-answer-label">вњ¦ MindVault РѕС‚РІРµС‡Р°РµС‚</div>
+  <div class="ai-answer-label">✦ MindVault отвечает</div>
   <div class="ai-answer-text" id="aiAnswerText"></div>
   <div class="ai-sources" id="aiSources"></div>
 </div>
@@ -611,32 +611,32 @@ body::after {
 <!-- ADD SECTION -->
 <div class="add-section" id="addSection">
   <div class="add-tabs">
-    <button class="add-tab active" id="tabText" onclick="switchTab('text')">вњЌпёЏ РўРµРєСЃС‚</button>
-    <button class="add-tab" id="tabVoice" onclick="switchTab('voice')">рџЋ™ Р“РѕР»РѕСЃ</button>
+    <button class="add-tab active" id="tabText" onclick="switchTab('text')">✍️ Текст</button>
+    <button class="add-tab" id="tabVoice" onclick="switchTab('voice')">🎙 Голос</button>
   </div>
 
   <!-- TEXT PANEL -->
   <div class="text-panel" id="textPanel">
     <div class="textarea-wrap">
       <textarea class="entry-textarea" id="entryText"
-        placeholder="Р—Р°РїРёС€Рё РјС‹СЃР»СЊ, РёРґРµСЋ, РєРѕРЅСЃРїРµРєС‚ СЃС‚Р°С‚СЊРё, С†РёС‚Р°С‚Сѓ... Р’СЃС‘ С‡С‚Рѕ С…РѕС‡РµС€СЊ СЃРѕС…СЂР°РЅРёС‚СЊ Рё РїРѕРЅСЏС‚СЊ РїРѕР·Р¶Рµ."></textarea>
+        placeholder="Запиши мысль, идею, конспект статьи, цитату... Всё что хочешь сохранить и понять позже."></textarea>
     </div>
     <div class="entry-actions">
-      <input class="tag-inp" id="tagInp" placeholder="#С‚РµРі" />
-      <button class="ai-summarize-btn" id="summarizeBtn">вњ¦ AI СЂРµР·СЋРјРµ</button>
-      <button class="save-btn" id="saveTextBtn">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+      <input class="tag-inp" id="tagInp" placeholder="#тег" />
+      <button class="ai-summarize-btn" id="summarizeBtn">✦ AI резюме</button>
+      <button class="save-btn" id="saveTextBtn">Сохранить</button>
     </div>
   </div>
 
   <!-- VOICE PANEL -->
   <div class="voice-panel" id="voicePanel">
     <div class="voice-center">
-      <div class="mic-ring" id="micRing">рџЋ™</div>
-      <div class="mic-status" id="micStatus">РќР°Р¶РјРё С‡С‚РѕР±С‹ РЅР°С‡Р°С‚СЊ Р·Р°РїРёСЃСЊ</div>
+      <div class="mic-ring" id="micRing">🎙</div>
+      <div class="mic-status" id="micStatus">Нажми чтобы начать запись</div>
       <div class="voice-transcript" id="voiceTranscript" style="display:none"></div>
       <div class="voice-actions" id="voiceActions" style="display:none">
-        <button class="ai-summarize-btn" style="flex:1" id="voiceSummarizeBtn">вњ¦ AI СЂРµР·СЋРјРµ</button>
-        <button class="save-btn" id="saveVoiceBtn">РЎРѕС…СЂР°РЅРёС‚СЊ</button>
+        <button class="ai-summarize-btn" style="flex:1" id="voiceSummarizeBtn">✦ AI резюме</button>
+        <button class="save-btn" id="saveVoiceBtn">Сохранить</button>
       </div>
     </div>
   </div>
@@ -646,7 +646,7 @@ body::after {
 <div id="homeView">
   <div class="entries-wrap">
     <div class="section-hdr">
-      <div class="section-title" id="sectionTitle">РџРѕСЃР»РµРґРЅРёРµ Р·Р°РїРёСЃРё</div>
+      <div class="section-title" id="sectionTitle">Последние записи</div>
       <span class="section-count" id="sectionCount">0</span>
     </div>
     <div id="entriesList"></div>
@@ -657,7 +657,7 @@ body::after {
 <div id="tagsView" style="display:none">
   <div class="tags-view">
     <div class="section-hdr">
-      <div class="section-title">РўРµРіРё</div>
+      <div class="section-title">Теги</div>
     </div>
     <div class="tags-grid" id="tagsGrid"></div>
     <div id="tagEntriesList"></div>
@@ -667,40 +667,40 @@ body::after {
 <!-- DETAIL VIEW -->
 <div class="detail-view" id="detailView">
   <div class="detail-top">
-    <button class="back-btn" id="backBtn">в†ђ РќР°Р·Р°Рґ</button>
+    <button class="back-btn" id="backBtn">← Назад</button>
     <div style="margin-left:auto;display:flex;gap:8px">
-      <button class="entry-act del" id="detailDelBtn" title="РЈРґР°Р»РёС‚СЊ">рџ—‘</button>
+      <button class="entry-act del" id="detailDelBtn" title="Удалить">🗑</button>
     </div>
   </div>
   <div class="detail-content">
-    <textarea class="detail-title-inp" id="detailTitle" rows="1" placeholder="Р—Р°РіРѕР»РѕРІРѕРє..."></textarea>
-    <textarea class="detail-body" id="detailBody" placeholder="РўРµРєСЃС‚ Р·Р°РїРёСЃРё..."></textarea>
+    <textarea class="detail-title-inp" id="detailTitle" rows="1" placeholder="Заголовок..."></textarea>
+    <textarea class="detail-body" id="detailBody" placeholder="Текст записи..."></textarea>
     <div class="detail-divider"></div>
     <div class="detail-summary-box" id="detailSummaryBox" style="display:none">
-      <div class="detail-summary-label">вњ¦ AI СЂРµР·СЋРјРµ</div>
+      <div class="detail-summary-label">✦ AI резюме</div>
       <div class="detail-summary-text" id="detailSummaryText"></div>
     </div>
     <!-- FLASHCARDS -->
     <div class="cards-section" id="cardsSection" style="display:none">
       <div class="cards-label">
-        рџѓЏ Р¤Р»СЌС€-РєР°СЂС‚РѕС‡РєРё
-        <button class="gen-cards-btn" id="genCardsBtn">вњ¦ РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ</button>
+        🃏 Флэш-карточки
+        <button class="gen-cards-btn" id="genCardsBtn">✦ Сгенерировать</button>
       </div>
       <div class="cards-progress" id="cardsProgress" style="display:none">
         <span id="cardsProgressText">0 / 0</span>
         <div class="cards-prog-bar"><div class="cards-prog-fill" id="cardsProgFill" style="width:0"></div></div>
       </div>
       <div class="cards-grid" id="cardsGrid"></div>
-      <div class="cards-done" id="cardsDone">рџЋ‰ Р’СЃРµ РєР°СЂС‚РѕС‡РєРё РїСЂРѕР№РґРµРЅС‹!<br><span style="font-size:14px;font-weight:400;font-family:'Crimson Pro',serif;color:var(--ink2)">РџРѕРІС‚РѕСЂРё СЃРЅРѕРІР° Р·Р°РІС‚СЂР°</span></div>
+      <div class="cards-done" id="cardsDone">🎉 Все карточки пройдены!<br><span style="font-size:14px;font-weight:400;font-family:'Crimson Pro',serif;color:var(--ink2)">Повтори снова завтра</span></div>
     </div>
     <div class="detail-divider"></div>
 
     <div class="detail-chat" id="detailChat">
-      <div class="chat-label" style="margin-top:20px">рџ’¬ РЎРїСЂРѕСЃРё РѕР± СЌС‚РѕР№ Р·Р°РїРёСЃРё</div>
+      <div class="chat-label" style="margin-top:20px">💬 Спроси об этой записи</div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-inp-row">
-        <input class="chat-inp" id="chatInp" placeholder="Р§С‚Рѕ Р·РЅР°С‡РёС‚ СЌС‚Р° РёРґРµСЏ РґР»СЏ РјРµРЅСЏ?" />
-        <button class="chat-send" id="chatSend">в†’</button>
+        <input class="chat-inp" id="chatInp" placeholder="Что значит эта идея для меня?" />
+        <button class="chat-send" id="chatSend">→</button>
       </div>
     </div>
   </div>
@@ -709,13 +709,13 @@ body::after {
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="nav-item active" id="navHome" onclick="setView('home')">
-    <div class="nav-icon">рџ“–</div><span>Р‘Р°Р·Р°</span>
+    <div class="nav-icon">📖</div><span>База</span>
   </button>
   <button class="nav-item" id="navTags" onclick="setView('tags')">
-    <div class="nav-icon">рџЏ·</div><span>РўРµРіРё</span>
+    <div class="nav-icon">🏷</div><span>Теги</span>
   </button>
   <button class="nav-item" id="navStats" onclick="setView('stats')">
-    <div class="nav-icon">рџ“Љ</div><span>РС‚РѕРіРё</span>
+    <div class="nav-icon">📊</div><span>Итоги</span>
   </button>
 </nav>
 
@@ -750,10 +750,10 @@ function toast(msg, dur=2800) {
 function fmtDate(ts) {
   const d = new Date(ts), now = new Date();
   const diff = now - d;
-  if (diff < 60000) return 'С‚РѕР»СЊРєРѕ С‡С‚Рѕ';
-  if (diff < 3600000) return Math.floor(diff/60000) + ' РјРёРЅ РЅР°Р·Р°Рґ';
-  if (diff < 86400000) return Math.floor(diff/3600000) + ' С‡ РЅР°Р·Р°Рґ';
-  if (diff < 7*86400000) return Math.floor(diff/86400000) + ' РґРЅ РЅР°Р·Р°Рґ';
+  if (diff < 60000) return 'только что';
+  if (diff < 3600000) return Math.floor(diff/60000) + ' мин назад';
+  if (diff < 86400000) return Math.floor(diff/3600000) + ' ч назад';
+  if (diff < 7*86400000) return Math.floor(diff/86400000) + ' дн назад';
   return d.toLocaleDateString('ru', {day:'numeric', month:'short'});
 }
 function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -769,11 +769,11 @@ function progress(show, pct=0) {
 function getApiKey() {
   let key = localStorage.getItem('mv_or_key');
   if (!key) {
-    key = prompt('Р’РІРµРґРё СЃРІРѕР№ OpenRouter API РєР»СЋС‡ (sk-or-...):\n\n1. Р—Р°Р№РґРё РЅР° openrouter.ai\n2. Sign in в†’ Keys в†’ Create Key\n3. РЎРєРѕРїРёСЂСѓР№ Рё РІСЃС‚Р°РІСЊ СЃСЋРґР°\n\nР‘РµСЃРїР»Р°С‚РЅС‹Рµ РјРѕРґРµР»Рё РґРѕСЃС‚СѓРїРЅС‹ Р±РµР· РѕРїР»Р°С‚С‹!');
+    key = prompt('Введи свой OpenRouter API ключ (sk-or-...):\n\n1. Зайди на openrouter.ai\n2. Sign in → Keys → Create Key\n3. Скопируй и вставь сюда\n\nБесплатные модели доступны без оплаты!');
     if (key && key.startsWith('sk-or-')) {
       localStorage.setItem('mv_or_key', key);
     } else {
-      toast('РќРµРІРµСЂРЅС‹Р№ РєР»СЋС‡. РќСѓР¶РµРЅ РєР»СЋС‡ OpenRouter (sk-or-...)'); return null;
+      toast('Неверный ключ. Нужен ключ OpenRouter (sk-or-...)'); return null;
     }
   }
   return key;
@@ -807,21 +807,21 @@ async function callClaude(prompt, system='') {
 // AI SUMMARIZE
 async function summarizeText(text) {
   return await callClaude(
-    `РўРµРєСЃС‚: "${text}"\n\nРЎРґРµР»Р°Р№ РєСЂР°С‚РєРѕРµ СЂРµР·СЋРјРµ (2-3 РїСЂРµРґР»РѕР¶РµРЅРёСЏ) РЅР° СЂСѓСЃСЃРєРѕРј СЏР·С‹РєРµ. Р’С‹РґРµР»Рё РіР»Р°РІРЅСѓСЋ РјС‹СЃР»СЊ Рё РєР»СЋС‡РµРІС‹Рµ РёРґРµРё. РўРѕР»СЊРєРѕ СЂРµР·СЋРјРµ, Р±РµР· РїСЂРµР°РјР±СѓР».`,
-    'РўС‹ РїРѕРјРѕРіР°РµС€СЊ СЃРѕР·РґР°РІР°С‚СЊ РєСЂР°С‚РєРёРµ Рё С‚РѕС‡РЅС‹Рµ СЂРµР·СЋРјРµ РґР»СЏ Р»РёС‡РЅРѕР№ Р±Р°Р·С‹ Р·РЅР°РЅРёР№.'
+    `Текст: "${text}"\n\nСделай краткое резюме (2-3 предложения) на русском языке. Выдели главную мысль и ключевые идеи. Только резюме, без преамбул.`,
+    'Ты помогаешь создавать краткие и точные резюме для личной базы знаний.'
   );
 }
 
 async function generateTitle(text) {
   return await callClaude(
-    `РўРµРєСЃС‚: "${text.slice(0,500)}"\n\nРџСЂРёРґСѓРјР°Р№ РєРѕСЂРѕС‚РєРёР№, С‘РјРєРёР№ Р·Р°РіРѕР»РѕРІРѕРє (РґРѕ 8 СЃР»РѕРІ) РЅР° СЂСѓСЃСЃРєРѕРј СЏР·С‹РєРµ. РўРѕР»СЊРєРѕ Р·Р°РіРѕР»РѕРІРѕРє, Р±РµР· РєР°РІС‹С‡РµРє.`,
-    'РўС‹ РїСЂРёРґСѓРјС‹РІР°РµС€СЊ Р·Р°РіРѕР»РѕРІРєРё РґР»СЏ Р·Р°РјРµС‚РѕРє.'
+    `Текст: "${text.slice(0,500)}"\n\nПридумай короткий, ёмкий заголовок (до 8 слов) на русском языке. Только заголовок, без кавычек.`,
+    'Ты придумываешь заголовки для заметок.'
   );
 }
 
 // SAVE ENTRY
 async function saveEntry(text, tags, type='text', withSummary=false) {
-  if (!text.trim()) { toast('Р’РІРµРґРё С‚РµРєСЃС‚'); return; }
+  if (!text.trim()) { toast('Введи текст'); return; }
   const entry = {
     id: uid(), text: text.trim(), tags: parseTags(tags),
     type, createdAt: Date.now(), title: '', summary: ''
@@ -840,7 +840,7 @@ async function saveEntry(text, tags, type='text', withSummary=false) {
   progress(false);
   entries.unshift(entry);
   save(); renderEntries(); updateStats();
-  toast('вњ“ Р—Р°РїРёСЃСЊ СЃРѕС…СЂР°РЅРµРЅР°');
+  toast('✓ Запись сохранена');
   return entry;
 }
 
@@ -851,9 +851,9 @@ function parseTags(str) {
 // SUMMARIZE BUTTON
 document.getElementById('summarizeBtn').onclick = async () => {
   const text = document.getElementById('entryText').value.trim();
-  if (!text) { toast('Р’РІРµРґРё С‚РµРєСЃС‚ РґР»СЏ СЂРµР·СЋРјРµ'); return; }
+  if (!text) { toast('Введи текст для резюме'); return; }
   const btn = document.getElementById('summarizeBtn');
-  btn.disabled = true; btn.textContent = 'вњ¦ ...';
+  btn.disabled = true; btn.textContent = '✦ ...';
   progress(true, 30);
   try {
     const summary = await summarizeText(text);
@@ -869,8 +869,8 @@ document.getElementById('summarizeBtn').onclick = async () => {
     }
     prev.textContent = summary;
     progress(false);
-  } catch(e) { toast('РћС€РёР±РєР° AI'); progress(false); }
-  btn.disabled = false; btn.innerHTML = 'вњ¦ AI СЂРµР·СЋРјРµ';
+  } catch(e) { toast('Ошибка AI'); progress(false); }
+  btn.disabled = false; btn.innerHTML = '✦ AI резюме';
 };
 
 document.getElementById('saveTextBtn').onclick = async () => {
@@ -905,28 +905,28 @@ function initVoice() {
   rec.onend = () => {
     isRecording = false;
     document.getElementById('micRing').classList.remove('recording');
-    document.getElementById('micStatus').textContent = voiceText ? 'Р—Р°РїРёСЃСЊ Р·Р°РІРµСЂС€РµРЅР°' : 'РќР°Р¶РјРё С‡С‚РѕР±С‹ РЅР°С‡Р°С‚СЊ Р·Р°РїРёСЃСЊ';
+    document.getElementById('micStatus').textContent = voiceText ? 'Запись завершена' : 'Нажми чтобы начать запись';
   };
 }
 
 document.getElementById('micRing').onclick = () => {
-  if (!rec) { toast('Р“РѕР»РѕСЃРѕРІРѕР№ РІРІРѕРґ РЅРµРґРѕСЃС‚СѓРїРµРЅ РІ СЌС‚РѕРј Р±СЂР°СѓР·РµСЂРµ'); return; }
+  if (!rec) { toast('Голосовой ввод недоступен в этом браузере'); return; }
   if (isRecording) {
     rec.stop(); isRecording = false;
     document.getElementById('micRing').classList.remove('recording');
-    document.getElementById('micStatus').textContent = 'РћР±СЂР°Р±РѕС‚РєР°...';
+    document.getElementById('micStatus').textContent = 'Обработка...';
   } else {
     voiceText = '';
     document.getElementById('voiceTranscript').style.display = 'none';
     document.getElementById('voiceActions').style.display = 'none';
     rec.start(); isRecording = true;
     document.getElementById('micRing').classList.add('recording');
-    document.getElementById('micStatus').textContent = 'рџ”ґ Р—Р°РїРёСЃСЊ РёРґС‘С‚... РЅР°Р¶РјРё С‡С‚РѕР±С‹ РѕСЃС‚Р°РЅРѕРІРёС‚СЊ';
+    document.getElementById('micStatus').textContent = '🔴 Запись идёт... нажми чтобы остановить';
   }
 };
 
 document.getElementById('voiceSummarizeBtn').onclick = async () => {
-  if (!voiceText) { toast('РќРµС‚ С‚РµРєСЃС‚Р°'); return; }
+  if (!voiceText) { toast('Нет текста'); return; }
   const btn = document.getElementById('voiceSummarizeBtn');
   btn.disabled = true; progress(true, 40);
   const summary = await summarizeText(voiceText);
@@ -936,13 +936,13 @@ document.getElementById('voiceSummarizeBtn').onclick = async () => {
 };
 
 document.getElementById('saveVoiceBtn').onclick = async () => {
-  if (!voiceText) { toast('РќРµС‚ С‚РµРєСЃС‚Р° РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ'); return; }
+  if (!voiceText) { toast('Нет текста для сохранения'); return; }
   const entry = await saveEntry(voiceText, '', 'voice');
   if (entry) {
     voiceText = '';
     document.getElementById('voiceTranscript').style.display = 'none';
     document.getElementById('voiceActions').style.display = 'none';
-    document.getElementById('micStatus').textContent = 'РќР°Р¶РјРё С‡С‚РѕР±С‹ РЅР°С‡Р°С‚СЊ Р·Р°РїРёСЃСЊ';
+    document.getElementById('micStatus').textContent = 'Нажми чтобы начать запись';
     switchTab('text');
   }
 };
@@ -969,8 +969,8 @@ async function aiSearch(q) {
   progress(true, 30);
   try {
     const ans = await callClaude(
-      `Р’РѕРїСЂРѕСЃ: "${q}"\n\nРњРѕРё Р·Р°РїРёСЃРё:\n${ctx}\n\nРћС‚РІРµС‚СЊ РЅР° РІРѕРїСЂРѕСЃ РёСЃРїРѕР»СЊР·СѓСЏ РјРѕРё Р·Р°РїРёСЃРё. РЈРєР°Р¶Рё РЅРѕРјРµСЂР° [N] РёСЃС‚РѕС‡РЅРёРєРѕРІ. Р•СЃР»Рё РѕС‚РІРµС‚Р° РЅРµС‚ вЂ” СЃРєР°Р¶Рё РѕР± СЌС‚РѕРј. РљСЂР°С‚РєРѕ, РїРѕ СЃСѓС‰РµСЃС‚РІСѓ.`,
-      'РўС‹ СѓРјРЅС‹Р№ РїРѕРёСЃРєРѕРІРёРє РїРѕ Р»РёС‡РЅРѕР№ Р±Р°Р·Рµ Р·РЅР°РЅРёР№. РћС‚РІРµС‡Р°Р№ РЅР° СЂСѓСЃСЃРєРѕРј, РєСЂР°С‚РєРѕ Рё С‚РѕС‡РЅРѕ.'
+      `Вопрос: "${q}"\n\nМои записи:\n${ctx}\n\nОтветь на вопрос используя мои записи. Укажи номера [N] источников. Если ответа нет — скажи об этом. Кратко, по существу.`,
+      'Ты умный поисковик по личной базе знаний. Отвечай на русском, кратко и точно.'
     );
     progress(true, 90);
     showAiAnswer(ans, q);
@@ -989,7 +989,7 @@ function showAiAnswer(text, q) {
   if (unique.length) {
     const lbl = document.createElement('span');
     lbl.style.cssText = 'font-size:11px;color:var(--ink2);font-style:italic;margin-right:4px';
-    lbl.textContent = 'РСЃС‚РѕС‡РЅРёРєРё:';
+    lbl.textContent = 'Источники:';
     src.appendChild(lbl);
     unique.forEach(i => {
       const chip = document.createElement('span');
@@ -1016,14 +1016,14 @@ function renderEntries(query='') {
       e.tags.some(t => t.toLowerCase().includes(q))
     );
   }
-  document.getElementById('sectionTitle').textContent = query ? `Р РµР·СѓР»СЊС‚Р°С‚С‹: В«${query}В»` : 'РџРѕСЃР»РµРґРЅРёРµ Р·Р°РїРёСЃРё';
+  document.getElementById('sectionTitle').textContent = query ? `Результаты: «${query}»` : 'Последние записи';
   document.getElementById('sectionCount').textContent = filtered.length;
 
   if (!filtered.length) {
     list.innerHTML = `<div class="empty-state">
-      <div class="empty-icon">${query ? 'рџ”Ќ' : 'рџ“–'}</div>
-      <div class="empty-title">${query ? 'РќРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ' : 'Р‘Р°Р·Р° Р·РЅР°РЅРёР№ РїСѓСЃС‚Р°'}</div>
-      <div class="empty-sub">${query ? 'РџРѕРїСЂРѕР±СѓР№ РґСЂСѓРіРѕР№ Р·Р°РїСЂРѕСЃ' : 'Р”РѕР±Р°РІСЊ РїРµСЂРІСѓСЋ Р·Р°РїРёСЃСЊ вЂ” РјС‹СЃР»СЊ, РёРґРµСЋ РёР»Рё РєРѕРЅСЃРїРµРєС‚'}</div>
+      <div class="empty-icon">${query ? '🔍' : '📖'}</div>
+      <div class="empty-title">${query ? 'Ничего не найдено' : 'База знаний пуста'}</div>
+      <div class="empty-sub">${query ? 'Попробуй другой запрос' : 'Добавь первую запись — мысль, идею или конспект'}</div>
     </div>`;
     return;
   }
@@ -1036,12 +1036,12 @@ function buildCard(e) {
   card.className = 'entry-card ' + (e.type==='voice'?'voice-type':'text-type');
   card.innerHTML = `
     <div class="entry-actions-row">
-      <button class="entry-act del" onclick="deleteEntry('${e.id}',event)">вњ•</button>
+      <button class="entry-act del" onclick="deleteEntry('${e.id}',event)">✕</button>
     </div>
     <div class="entry-type-badge ${e.type==='voice'?'voice':'text'}">
-      ${e.type==='voice'?'рџЋ™ Р“РѕР»РѕСЃРѕРІР°СЏ':'вњЌпёЏ РўРµРєСЃС‚РѕРІР°СЏ'}
+      ${e.type==='voice'?'🎙 Голосовая':'✍️ Текстовая'}
     </div>
-    <div class="entry-title">${esc(e.title||'Р‘РµР· Р·Р°РіРѕР»РѕРІРєР°')}</div>
+    <div class="entry-title">${esc(e.title||'Без заголовка')}</div>
     <div class="entry-preview">${esc(e.text)}</div>
     ${e.summary ? `<div class="entry-summary">${esc(e.summary)}</div>` : ''}
     <div class="entry-footer">
@@ -1068,7 +1068,7 @@ function openDetail(id) {
   curCards = curEntry.cards || [];
   cardsKnown = new Set();
   document.getElementById('cardsSection').style.display = 'block';
-  document.getElementById('genCardsBtn').textContent = curCards.length ? 'вњ¦ РћР±РЅРѕРІРёС‚СЊ' : 'вњ¦ РЎРіРµРЅРµСЂРёСЂРѕРІР°С‚СЊ';
+  document.getElementById('genCardsBtn').textContent = curCards.length ? '✦ Обновить' : '✦ Сгенерировать';
   if (curCards.length) renderCards();
   else { document.getElementById('cardsGrid').innerHTML = ''; document.getElementById('cardsProgress').style.display='none'; document.getElementById('cardsDone').classList.remove('show'); }
   document.getElementById('detailView').classList.add('open');
@@ -1115,11 +1115,11 @@ async function sendChat() {
 
   try {
     const ans = await callClaude(
-      `Р—Р°РїРёСЃСЊ: "${curEntry.title}"\n\nРўРµРєСЃС‚: "${curEntry.text}"\n\nР’РѕРїСЂРѕСЃ: "${q}"\n\nРћС‚РІРµС‚СЊ РЅР° РІРѕРїСЂРѕСЃ, РѕРїРёСЂР°СЏСЃСЊ РЅР° СЃРѕРґРµСЂР¶Р°РЅРёРµ Р·Р°РїРёСЃРё.`,
-      'РўС‹ РїРѕРјРѕРіР°РµС€СЊ РѕСЃРјС‹СЃР»РёС‚СЊ Р»РёС‡РЅС‹Рµ Р·Р°РјРµС‚РєРё. РћС‚РІРµС‡Р°Р№ РєСЂР°С‚РєРѕ, РїРѕ-СЂСѓСЃСЃРєРё, РІ РґСЂСѓР¶РµСЃРєРѕРј С‚РѕРЅРµ.'
+      `Запись: "${curEntry.title}"\n\nТекст: "${curEntry.text}"\n\nВопрос: "${q}"\n\nОтветь на вопрос, опираясь на содержание записи.`,
+      'Ты помогаешь осмыслить личные заметки. Отвечай кратко, по-русски, в дружеском тоне.'
     );
     tb.innerHTML = ans;
-  } catch(e) { tb.textContent = 'РћС€РёР±РєР°. РџРѕРїСЂРѕР±СѓР№ РµС‰С‘ СЂР°Р·.'; }
+  } catch(e) { tb.textContent = 'Ошибка. Попробуй ещё раз.'; }
   msgs.scrollTop = msgs.scrollHeight;
 }
 
@@ -1128,7 +1128,7 @@ function deleteEntry(id, e) {
   if (e) e.stopPropagation();
   entries = entries.filter(x => x.id !== id);
   save(); renderEntries(); renderTags(); updateStats();
-  toast('Р—Р°РїРёСЃСЊ СѓРґР°Р»РµРЅР°');
+  toast('Запись удалена');
 }
 window.deleteEntry = deleteEntry;
 
@@ -1140,12 +1140,12 @@ let cardsKnown = new Set();
 async function generateCards() {
   if (!curEntry) return;
   const btn = document.getElementById('genCardsBtn');
-  btn.disabled = true; btn.textContent = 'вњ¦ Р“РµРЅРµСЂРёСЂСѓСЋ...';
+  btn.disabled = true; btn.textContent = '✦ Генерирую...';
   progress(true, 30);
   try {
     const result = await callClaude(
-      `РўРµРєСЃС‚: "${curEntry.text.slice(0, 2000)}"\n\nРЎРѕР·РґР°Р№ 6-8 С„Р»СЌС€-РєР°СЂС‚РѕС‡РµРє РґР»СЏ Р·Р°РїРѕРјРёРЅР°РЅРёСЏ РєР»СЋС‡РµРІС‹С… РёРґРµР№.\nР¤РѕСЂРјР°С‚ СЃС‚СЂРѕРіРѕ JSON РјР°СЃСЃРёРІ:\n[{"q": "РІРѕРїСЂРѕСЃ", "a": "РѕС‚РІРµС‚"}, ...]\nРўРѕР»СЊРєРѕ JSON, Р±РµР· РїРѕСЏСЃРЅРµРЅРёР№.`,
-      'РўС‹ СЃРѕР·РґР°С‘С€СЊ С„Р»СЌС€-РєР°СЂС‚РѕС‡РєРё РґР»СЏ Р·Р°РїРѕРјРёРЅР°РЅРёСЏ. Р’РѕРїСЂРѕСЃС‹ РґРѕР»Р¶РЅС‹ РїСЂРѕРІРµСЂСЏС‚СЊ РїРѕРЅРёРјР°РЅРёРµ, Р° РЅРµ РїСЂРѕСЃС‚Рѕ С„Р°РєС‚С‹. РћС‚РІРµС‡Р°Р№ С‚РѕР»СЊРєРѕ JSON.'
+      `Текст: "${curEntry.text.slice(0, 2000)}"\n\nСоздай 6-8 флэш-карточек для запоминания ключевых идей.\nФормат строго JSON массив:\n[{"q": "вопрос", "a": "ответ"}, ...]\nТолько JSON, без пояснений.`,
+      'Ты создаёшь флэш-карточки для запоминания. Вопросы должны проверять понимание, а не просто факты. Отвечай только JSON.'
     );
     progress(true, 80);
     const clean = result.replace(/\`\`\`json|\`\`\`/g, '').trim();
@@ -1157,10 +1157,10 @@ async function generateCards() {
     renderCards();
     progress(false);
   } catch(e) {
-    toast('РћС€РёР±РєР° РіРµРЅРµСЂР°С†РёРё РєР°СЂС‚РѕС‡РµРє'); progress(false);
+    toast('Ошибка генерации карточек'); progress(false);
     console.error(e);
   }
-  btn.disabled = false; btn.textContent = 'вњ¦ РћР±РЅРѕРІРёС‚СЊ';
+  btn.disabled = false; btn.textContent = '✦ Обновить';
 }
 
 function renderCards() {
@@ -1181,8 +1181,8 @@ function renderCards() {
       </div>
       <div class="card-answer" id="card-ans-${i}">${esc(card.a)}</div>
       <div class="card-footer" id="card-foot-${i}">
-        <button class="card-rate know" onclick="rateCard(${i}, true)">вњ“ Р—РЅР°СЋ</button>
-        <button class="card-rate again" onclick="rateCard(${i}, false)">в†є Р•С‰С‘ СЂР°Р·</button>
+        <button class="card-rate know" onclick="rateCard(${i}, true)">✓ Знаю</button>
+        <button class="card-rate again" onclick="rateCard(${i}, false)">↺ Ещё раз</button>
       </div>`;
     grid.appendChild(div);
   });
@@ -1227,7 +1227,7 @@ function renderTags() {
   const grid = document.getElementById('tagsGrid');
   grid.innerHTML = '';
   if (!allTags.length) {
-    grid.innerHTML = '<div style="color:var(--ink2);font-style:italic;font-size:14px">РўРµРіРѕРІ РїРѕРєР° РЅРµС‚ вЂ” РґРѕР±Р°РІСЊ #С‚РµРі РїСЂРё СЃРѕС…СЂР°РЅРµРЅРёРё</div>';
+    grid.innerHTML = '<div style="color:var(--ink2);font-style:italic;font-size:14px">Тегов пока нет — добавь #тег при сохранении</div>';
     return;
   }
   allTags.forEach(tag => {
@@ -1259,16 +1259,16 @@ function showStats() {
   const today = entries.filter(e => new Date(e.createdAt).toDateString()===new Date().toDateString()).length;
   const el = document.getElementById('homeView');
   el.innerHTML = `<div class="entries-wrap">
-    <div class="section-hdr"><div class="section-title">РЎС‚Р°С‚РёСЃС‚РёРєР°</div></div>
+    <div class="section-hdr"><div class="section-title">Статистика</div></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      ${statCard('рџ“љ', 'Р’СЃРµРіРѕ Р·Р°РїРёСЃРµР№', total)}
-      ${statCard('вњЌпёЏ', 'РўРµРєСЃС‚РѕРІС‹С…', texts)}
-      ${statCard('рџЋ™', 'Р“РѕР»РѕСЃРѕРІС‹С…', voices)}
-      ${statCard('вњ¦', 'РЎ AI СЂРµР·СЋРјРµ', withSummary)}
-      ${statCard('рџЏ·', 'РЈРЅРёРєР°Р»СЊРЅС‹С… С‚РµРіРѕРІ', allTags.length)}
-      ${statCard('рџ“…', 'РЎРµРіРѕРґРЅСЏ РґРѕР±Р°РІР»РµРЅРѕ', today)}
+      ${statCard('📚', 'Всего записей', total)}
+      ${statCard('✍️', 'Текстовых', texts)}
+      ${statCard('🎙', 'Голосовых', voices)}
+      ${statCard('✦', 'С AI резюме', withSummary)}
+      ${statCard('🏷', 'Уникальных тегов', allTags.length)}
+      ${statCard('📅', 'Сегодня добавлено', today)}
     </div>
-    ${allTags.length ? `<div class="section-title" style="margin-bottom:12px">РўРѕРї С‚РµРіРё</div>
+    ${allTags.length ? `<div class="section-title" style="margin-bottom:12px">Топ теги</div>
     <div class="tags-grid">${allTags.slice(0,12).map(t=>`<span class="tag-filter">#${esc(t)}</span>`).join('')}</div>` : ''}
   </div>`;
 }
@@ -1326,19 +1326,19 @@ function updateStats() {
 // EXPORT
 window.resetApiKey = function() {
   localStorage.removeItem('mv_or_key');
-  toast('рџ”‘ API РєР»СЋС‡ СЃР±СЂРѕС€РµРЅ. Р’РІРµРґРё РЅРѕРІС‹Р№ РїСЂРё СЃР»РµРґСѓСЋС‰РµРј AI Р·Р°РїСЂРѕСЃРµ.');
+  toast('🔑 API ключ сброшен. Введи новый при следующем AI запросе.');
 };
 
 document.getElementById('exportBtn').onclick = () => {
   const data = entries.map(e =>
-    `# ${e.title}\n_${new Date(e.createdAt).toLocaleString('ru')}_\n\n${e.text}\n${e.summary?'\n**AI СЂРµР·СЋРјРµ:** '+e.summary:''}\n${e.tags.length?'\n**РўРµРіРё:** '+e.tags.map(t=>'#'+t).join(' '):''}\n\n---`
+    `# ${e.title}\n_${new Date(e.createdAt).toLocaleString('ru')}_\n\n${e.text}\n${e.summary?'\n**AI резюме:** '+e.summary:''}\n${e.tags.length?'\n**Теги:** '+e.tags.map(t=>'#'+t).join(' '):''}\n\n---`
   ).join('\n\n');
   const blob = new Blob([data], {type:'text/markdown'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'mindvault-export.md';
   a.click();
-  toast('рџ“Ґ Р­РєСЃРїРѕСЂС‚ РіРѕС‚РѕРІ!');
+  toast('📥 Экспорт готов!');
 };
 
 // AUTO RESIZE TEXTAREAS
