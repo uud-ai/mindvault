@@ -572,6 +572,30 @@ body::after {
   font-weight: 700; color: var(--green); display: none;
 }
 .cards-done.show { display: block; }
+
+/* PDF UPLOAD */
+.pdf-upload-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 14px; border-radius: 10px;
+  background: var(--paper2); border: 1.5px dashed var(--paper3);
+  color: var(--ink2); font-family: 'Crimson Pro', serif; font-size: 14px;
+  cursor: pointer; transition: all .2s; width: 100%; margin-bottom: 8px;
+  justify-content: center;
+}
+.pdf-upload-btn:hover { border-color: var(--warm); color: var(--warm); background: rgba(193,127,74,.06); }
+.pdf-upload-btn input { display: none; }
+.pdf-loading {
+  display: none; text-align: center; padding: 12px;
+  font-size: 14px; color: var(--warm); font-style: italic;
+}
+.pdf-loading.show { display: block; }
+.pdf-info {
+  display: none; padding: 8px 12px; border-radius: 10px;
+  background: rgba(74,124,89,.08); border: 1px solid rgba(74,124,89,.2);
+  font-size: 13px; color: var(--green); margin-bottom: 8px;
+  align-items: center; gap: 8px;
+}
+.pdf-info.show { display: flex; }
 </style>
 </head>
 <body>
@@ -617,6 +641,12 @@ body::after {
 
   <!-- TEXT PANEL -->
   <div class="text-panel" id="textPanel">
+    <label class="pdf-upload-btn" id="pdfUploadBtn">
+      📄 Загрузить PDF
+      <input type="file" id="pdfFileInp" accept=".pdf" />
+    </label>
+    <div class="pdf-loading" id="pdfLoading">📄 Извлекаю текст из PDF...</div>
+    <div class="pdf-info" id="pdfInfo"><span>✓</span><span id="pdfInfoText"></span></div>
     <div class="textarea-wrap">
       <textarea class="entry-textarea" id="entryText"
         placeholder="Запиши мысль, идею, конспект статьи, цитату... Всё что хочешь сохранить и понять позже."></textarea>
@@ -1350,6 +1380,61 @@ load();
 renderEntries();
 updateStats();
 initVoice();
+
+// ========== PDF EXTRACTION ==========
+(function() {
+  const script = document.createElement('script');
+  script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+  script.onload = () => {
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  };
+  document.head.appendChild(script);
+})();
+
+document.getElementById('pdfFileInp').onchange = async function(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const loading = document.getElementById('pdfLoading');
+  const info = document.getElementById('pdfInfo');
+  const textarea = document.getElementById('entryText');
+  loading.classList.add('show');
+  info.classList.remove('show');
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = content.items.map(item => item.str).join(' ');
+      fullText += pageText + '
+
+';
+    }
+    fullText = fullText.trim();
+    if (!fullText) {
+      toast('Не удалось извлечь текст — PDF может быть сканом');
+      loading.classList.remove('show'); return;
+    }
+    textarea.value = fullText;
+    autoResize(textarea);
+    if (!document.getElementById('tagInp').value) {
+      document.getElementById('tagInp').value = '#pdf';
+    }
+    document.getElementById('pdfInfoText').textContent =
+      file.name + ' — ' + pdf.numPages + ' стр., ' + fullText.length + ' символов';
+    info.classList.add('show');
+    loading.classList.remove('show');
+    toast('Текст извлечён из PDF');
+  } catch(err) {
+    console.error(err);
+    toast('Ошибка чтения PDF');
+    loading.classList.remove('show');
+  }
+  this.value = '';
+};
+
 // SW disabled to avoid cache issues
 </script>
 </body>
