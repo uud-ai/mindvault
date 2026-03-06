@@ -1408,9 +1408,7 @@ document.getElementById('pdfFileInp').onchange = async function(e) {
       const page = await pdf.getPage(i);
       const content = await page.getTextContent();
       const pageText = content.items.map(item => item.str).join(' ');
-      fullText += pageText + '
-
-';
+      fullText += pageText + ' ';
     }
     fullText = fullText.trim();
     if (!fullText) {
