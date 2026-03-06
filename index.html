@@ -504,7 +504,8 @@ body::after {
     <div class="stats-pill">
       <span>📚 <strong id="totalCount">0</strong></span>
     </div>
-    <button class="hdr-btn" id="exportBtn" title="Экспорт">⬇</button>
+    <button class="hdr-btn" id="apiKeyBtn" title="API Ключ" onclick="resetApiKey()">🔑</button>
+  <button class="hdr-btn" id="exportBtn" title="Экспорт">⬇</button>
   </div>
 </header>
 
@@ -672,15 +673,39 @@ function progress(show, pct=0) {
 }
 
 // CLAUDE API
+function getApiKey() {
+  let key = localStorage.getItem('mv_api_key');
+  if (!key) {
+    key = prompt('Введи свой Anthropic API ключ (sk-ant-...):\n\nПолучить бесплатно: console.anthropic.com');
+    if (key && key.startsWith('sk-')) {
+      localStorage.setItem('mv_api_key', key);
+    } else {
+      toast('Неверный ключ. AI функции недоступны.'); return null;
+    }
+  }
+  return key;
+}
+
 async function callClaude(prompt, system='') {
+  const apiKey = getApiKey();
+  if (!apiKey) throw new Error('No API key');
   const messages = [{role:'user', content: prompt}];
   const body = { model: MODEL, max_tokens: 1000, messages };
   if (system) body.system = system;
   const r = await fetch(CLAUDE_URL, {
     method: 'POST',
-    headers: {'Content-Type':'application/json', 'anthropic-dangerous-allow-any-origin': 'true'},
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': apiKey,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-allow-any-origin': 'true'
+    },
     body: JSON.stringify(body)
   });
+  if (!r.ok) {
+    if (r.status === 401) { localStorage.removeItem('mv_api_key'); throw new Error('Invalid API key'); }
+    throw new Error('API error ' + r.status);
+  }
   const d = await r.json();
   return d.content?.[0]?.text || '';
 }
@@ -1109,6 +1134,11 @@ function updateStats() {
 }
 
 // EXPORT
+window.resetApiKey = function() {
+  localStorage.removeItem('mv_api_key');
+  toast('🔑 API ключ сброшен. Введи новый при следующем AI запросе.');
+};
+
 document.getElementById('exportBtn').onclick = () => {
   const data = entries.map(e =>
     `# ${e.title}\n_${new Date(e.createdAt).toLocaleString('ru')}_\n\n${e.text}\n${e.summary?'\n**AI резюме:** '+e.summary:''}\n${e.tags.length?'\n**Теги:** '+e.tags.map(t=>'#'+t).join(' '):''}\n\n---`
