@@ -629,8 +629,8 @@ body::after {
 <div class="toast" id="toast"></div>
 
 <script>
-const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
-const MODEL = 'claude-sonnet-4-20250514';
+const CLAUDE_URL = 'https://openrouter.ai/api/v1/chat/completions';
+const MODEL = 'anthropic/claude-haiku-4-5';
 
 let entries = [];
 let curEntry = null;
@@ -672,15 +672,15 @@ function progress(show, pct=0) {
   else { bar.classList.remove('show'); fill.style.width = '0'; }
 }
 
-// CLAUDE API
+// OPENROUTER API (supports CORS from browser)
 function getApiKey() {
-  let key = localStorage.getItem('mv_api_key');
+  let key = localStorage.getItem('mv_or_key');
   if (!key) {
-    key = prompt('Введи свой Anthropic API ключ (sk-ant-...):\n\nПолучить бесплатно: console.anthropic.com');
-    if (key && key.startsWith('sk-')) {
-      localStorage.setItem('mv_api_key', key);
+    key = prompt('Введи свой OpenRouter API ключ (sk-or-...):\n\n1. Зайди на openrouter.ai\n2. Sign in → Keys → Create Key\n3. Скопируй и вставь сюда\n\nБесплатные модели доступны без оплаты!');
+    if (key && key.startsWith('sk-or-')) {
+      localStorage.setItem('mv_or_key', key);
     } else {
-      toast('Неверный ключ. AI функции недоступны.'); return null;
+      toast('Неверный ключ. Нужен ключ OpenRouter (sk-or-...)'); return null;
     }
   }
   return key;
@@ -689,25 +689,26 @@ function getApiKey() {
 async function callClaude(prompt, system='') {
   const apiKey = getApiKey();
   if (!apiKey) throw new Error('No API key');
-  const messages = [{role:'user', content: prompt}];
+  const messages = [];
+  if (system) messages.push({role:'system', content: system});
+  messages.push({role:'user', content: prompt});
   const body = { model: MODEL, max_tokens: 1000, messages };
-  if (system) body.system = system;
   const r = await fetch(CLAUDE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'x-api-key': apiKey,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-allow-any-origin': 'true'
+      'Authorization': 'Bearer ' + apiKey,
+      'HTTP-Referer': 'https://uud-ai.github.io/mindvault/',
+      'X-Title': 'MindVault'
     },
     body: JSON.stringify(body)
   });
   if (!r.ok) {
-    if (r.status === 401) { localStorage.removeItem('mv_api_key'); throw new Error('Invalid API key'); }
+    if (r.status === 401) { localStorage.removeItem('mv_or_key'); throw new Error('Invalid key'); }
     throw new Error('API error ' + r.status);
   }
   const d = await r.json();
-  return d.content?.[0]?.text || '';
+  return d.choices?.[0]?.message?.content || '';
 }
 
 // AI SUMMARIZE
@@ -1135,7 +1136,7 @@ function updateStats() {
 
 // EXPORT
 window.resetApiKey = function() {
-  localStorage.removeItem('mv_api_key');
+  localStorage.removeItem('mv_or_key');
   toast('🔑 API ключ сброшен. Введи новый при следующем AI запросе.');
 };
 
@@ -1160,9 +1161,7 @@ load();
 renderEntries();
 updateStats();
 initVoice();
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
+// SW disabled to avoid cache issues
 </script>
 </body>
 </html>
