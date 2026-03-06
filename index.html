@@ -678,7 +678,7 @@ async function callClaude(prompt, system='') {
   if (system) body.system = system;
   const r = await fetch(CLAUDE_URL, {
     method: 'POST',
-    headers: {'Content-Type':'application/json'},
+    headers: {'Content-Type':'application/json', 'anthropic-dangerous-allow-any-origin': 'true'},
     body: JSON.stringify(body)
   });
   const d = await r.json();
