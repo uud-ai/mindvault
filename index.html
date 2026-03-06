@@ -494,6 +494,84 @@ body::after {
   .add-section,.search-wrap{max-width:720px;margin-left:auto;margin-right:auto;}
   .detail-content{max-width:680px;margin:0 auto;}
 }
+
+/* FLASHCARDS */
+.cards-section { margin-top: 20px; }
+.cards-label {
+  font-family: 'Playfair Display', serif; font-size: 16px;
+  font-weight: 700; color: var(--ink); margin-bottom: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.gen-cards-btn {
+  padding: 7px 16px; border-radius: 10px;
+  background: var(--paper2); border: 1.5px solid var(--paper3);
+  color: var(--ink2); font-family: 'Crimson Pro', serif; font-size: 14px;
+  cursor: pointer; transition: all .2s; display: flex; align-items: center; gap: 5px;
+}
+.gen-cards-btn:hover { border-color: var(--gold); color: var(--gold); }
+.cards-grid { display: flex; flex-direction: column; gap: 10px; }
+.flashcard {
+  background: #fff; border: 1.5px solid var(--paper3);
+  border-radius: 14px; cursor: pointer;
+  box-shadow: var(--shadow); transition: all .25s;
+  overflow: hidden;
+}
+.flashcard:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(44,24,16,.15); }
+.card-question {
+  padding: 16px 16px 12px;
+  font-family: 'Playfair Display', serif;
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.card-q-icon {
+  width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+  background: rgba(193,127,74,.15); border: 1.5px solid rgba(193,127,74,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: var(--warm); margin-top: 2px;
+}
+.card-answer {
+  padding: 0 16px 16px 50px;
+  font-size: 15px; line-height: 1.6; color: var(--ink2);
+  font-style: italic; display: none;
+  border-top: 1px dashed var(--paper3); padding-top: 12px; margin-top: 0;
+}
+.card-answer.show { display: block; }
+.card-footer {
+  padding: 0 16px 12px 50px;
+  display: none; gap: 8px;
+}
+.card-footer.show { display: flex; }
+.card-rate {
+  flex: 1; padding: 7px; border-radius: 9px; border: none;
+  font-family: 'Crimson Pro', serif; font-size: 13px; font-weight: 600;
+  cursor: pointer; transition: all .2s; text-align: center;
+}
+.card-rate.know {
+  background: rgba(74,124,89,.12); border: 1.5px solid rgba(74,124,89,.25); color: var(--green);
+}
+.card-rate.know:hover { background: rgba(74,124,89,.2); }
+.card-rate.again {
+  background: rgba(139,38,53,.08); border: 1.5px solid rgba(139,38,53,.2); color: var(--red);
+}
+.card-rate.again:hover { background: rgba(139,38,53,.15); }
+.card-known { opacity: .45; }
+.cards-progress {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 12px; font-size: 13px; color: var(--ink2);
+}
+.cards-prog-bar {
+  flex: 1; height: 6px; background: var(--paper3); border-radius: 3px; overflow: hidden;
+}
+.cards-prog-fill {
+  height: 100%; background: linear-gradient(90deg, var(--green), #6abf7c);
+  border-radius: 3px; transition: width .4s ease;
+}
+.cards-done {
+  text-align: center; padding: 20px;
+  font-family: 'Playfair Display', serif; font-size: 18px;
+  font-weight: 700; color: var(--green); display: none;
+}
+.cards-done.show { display: block; }
 </style>
 </head>
 <body>
@@ -602,6 +680,21 @@ body::after {
       <div class="detail-summary-label">✦ AI резюме</div>
       <div class="detail-summary-text" id="detailSummaryText"></div>
     </div>
+    <!-- FLASHCARDS -->
+    <div class="cards-section" id="cardsSection" style="display:none">
+      <div class="cards-label">
+        🃏 Флэш-карточки
+        <button class="gen-cards-btn" id="genCardsBtn">✦ Сгенерировать</button>
+      </div>
+      <div class="cards-progress" id="cardsProgress" style="display:none">
+        <span id="cardsProgressText">0 / 0</span>
+        <div class="cards-prog-bar"><div class="cards-prog-fill" id="cardsProgFill" style="width:0"></div></div>
+      </div>
+      <div class="cards-grid" id="cardsGrid"></div>
+      <div class="cards-done" id="cardsDone">🎉 Все карточки пройдены!<br><span style="font-size:14px;font-weight:400;font-family:'Crimson Pro',serif;color:var(--ink2)">Повтори снова завтра</span></div>
+    </div>
+    <div class="detail-divider"></div>
+
     <div class="detail-chat" id="detailChat">
       <div class="chat-label" style="margin-top:20px">💬 Спроси об этой записи</div>
       <div class="chat-messages" id="chatMessages"></div>
@@ -971,6 +1064,13 @@ function openDetail(id) {
     document.getElementById('detailSummaryText').textContent = curEntry.summary;
   } else sb.style.display = 'none';
   document.getElementById('chatMessages').innerHTML = '';
+  // Load existing cards
+  curCards = curEntry.cards || [];
+  cardsKnown = new Set();
+  document.getElementById('cardsSection').style.display = 'block';
+  document.getElementById('genCardsBtn').textContent = curCards.length ? '✦ Обновить' : '✦ Сгенерировать';
+  if (curCards.length) renderCards();
+  else { document.getElementById('cardsGrid').innerHTML = ''; document.getElementById('cardsProgress').style.display='none'; document.getElementById('cardsDone').classList.remove('show'); }
   document.getElementById('detailView').classList.add('open');
   autoResize(document.getElementById('detailTitle'));
   autoResize(document.getElementById('detailBody'));
@@ -1031,6 +1131,95 @@ function deleteEntry(id, e) {
   toast('Запись удалена');
 }
 window.deleteEntry = deleteEntry;
+
+
+// ========== FLASHCARDS ==========
+let curCards = [];
+let cardsKnown = new Set();
+
+async function generateCards() {
+  if (!curEntry) return;
+  const btn = document.getElementById('genCardsBtn');
+  btn.disabled = true; btn.textContent = '✦ Генерирую...';
+  progress(true, 30);
+  try {
+    const result = await callClaude(
+      `Текст: "${curEntry.text.slice(0, 2000)}"\n\nСоздай 6-8 флэш-карточек для запоминания ключевых идей.\nФормат строго JSON массив:\n[{"q": "вопрос", "a": "ответ"}, ...]\nТолько JSON, без пояснений.`,
+      'Ты создаёшь флэш-карточки для запоминания. Вопросы должны проверять понимание, а не просто факты. Отвечай только JSON.'
+    );
+    progress(true, 80);
+    const clean = result.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    curCards = JSON.parse(clean);
+    cardsKnown = new Set();
+    // Save to entry
+    curEntry.cards = curCards;
+    save();
+    renderCards();
+    progress(false);
+  } catch(e) {
+    toast('Ошибка генерации карточек'); progress(false);
+    console.error(e);
+  }
+  btn.disabled = false; btn.textContent = '✦ Обновить';
+}
+
+function renderCards() {
+  const grid = document.getElementById('cardsGrid');
+  const prog = document.getElementById('cardsProgress');
+  const done = document.getElementById('cardsDone');
+  grid.innerHTML = '';
+  if (!curCards.length) return;
+  prog.style.display = 'flex';
+  updateCardsProgress();
+  curCards.forEach((card, i) => {
+    const div = document.createElement('div');
+    div.className = 'flashcard' + (cardsKnown.has(i) ? ' card-known' : '');
+    div.innerHTML = `
+      <div class="card-question" onclick="toggleCard(${i})">
+        <div class="card-q-icon">Q</div>
+        <span>${esc(card.q)}</span>
+      </div>
+      <div class="card-answer" id="card-ans-${i}">${esc(card.a)}</div>
+      <div class="card-footer" id="card-foot-${i}">
+        <button class="card-rate know" onclick="rateCard(${i}, true)">✓ Знаю</button>
+        <button class="card-rate again" onclick="rateCard(${i}, false)">↺ Ещё раз</button>
+      </div>`;
+    grid.appendChild(div);
+  });
+  done.classList.toggle('show', cardsKnown.size === curCards.length);
+}
+
+window.toggleCard = function(i) {
+  const ans = document.getElementById('card-ans-' + i);
+  const foot = document.getElementById('card-foot-' + i);
+  ans.classList.toggle('show');
+  foot.classList.toggle('show');
+};
+
+window.rateCard = function(i, knew) {
+  if (knew) {
+    cardsKnown.add(i);
+    const card = document.querySelector('.flashcard:nth-child(' + (i+1) + ')');
+    if (card) card.classList.add('card-known');
+  } else {
+    cardsKnown.delete(i);
+  }
+  updateCardsProgress();
+  // Close the card
+  document.getElementById('card-ans-' + i).classList.remove('show');
+  document.getElementById('card-foot-' + i).classList.remove('show');
+  const done = document.getElementById('cardsDone');
+  done.classList.toggle('show', cardsKnown.size === curCards.length);
+};
+
+function updateCardsProgress() {
+  const total = curCards.length;
+  const known = cardsKnown.size;
+  document.getElementById('cardsProgressText').textContent = known + ' / ' + total;
+  document.getElementById('cardsProgFill').style.width = (total ? known/total*100 : 0) + '%';
+}
+
+document.getElementById('genCardsBtn').onclick = generateCards;
 
 // TAGS VIEW
 function renderTags() {
