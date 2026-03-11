@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#8b4513"/>
+<link rel="manifest" href="manifest.json"/>
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAAEkElEQVR4nO3cL3IcRxjG4VEqVFBEJDjA58gJoguE+UBmuYBygpzDIDjExMDAZR6wVaqtskq13W//+cZ5HmhH0nr6p697tKPcffvy6YBeP+1+AZybgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIj8vPsFHMdxfHh6t/slnNX75497X8DdrueBRDPclphWB6SbBVaWtCgg3WyxoKQVh2j17LLgys+dQNIpYt4omjiB1FPHvLWYMoGkU9bwUTR+AqmnsuGrMzgg9dQ3do1GBqSesxi4UsMCUs+5jFqvMQGp54yGrNqAu7CB9TzcP476VD+2z1+H3TuH92X7340XTYfrizYwpg7pBErGj3QGSjJKhlAUUHc90pmkO6PuhjY8kaieedZf2/6A+saPembru8Ldm0nnFtbx9aSzWMd21rGRLdrC1LPemmvutzKI9GxhrfuX8dPn16dfvv/Df57/bfokrRtZ6y42/QeJ6unwajrXf3V7Rg/3j1N/0jh3C1NPhzfqafpvXkxdheYtrGn/ElCTpiwubhxFTUOoaRebOIHUU8e8tXAXVkXH+On+qIFmBWT8NEk6uPFjJ61IW0AeHPs/aFplW9h++Ta0cSMTEJEpATkA1TRjXUwgIgIiIiAiAiIioP1an9CY8Rm6CYiIgEpIRsjG8XMIqI6+DvbWcwiI0P7fjefFZZzc+MbW9tlzYQKVc0sZReo5TKCa3hhFddK5EFBd1Vp5lS2MiICICIiIgIgIiIiAiFS/jf/9z793v4TN/vrjt90v4S0mEBEBEREQkepnoOInAEwgIgIiIiAiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiUv1xDo+0Fn+gxQQiIiAiAiJS/QxU/ASACUREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQESqP87hkdbiD7SYQEQERERARKqfgYqfADCBiAiIiICICIiIgIgIiIiAiAiIiICICIiIgIgIiIiAiAiISPXHOTzSWvyBFhOIiICICIhI9TNQ8RMAJhARAREREBEBEREQEQERERARAREREBEBEREQEQERERARAREREBEBEREQkSkBff76acanJTRjXUwgIgIi0hbQ++ePk14HdTSt8qwJ5BhUzaQVsYURmRiQIVTHvLVoDsgx6MfWur5ztzBDqIKpqzD9DKShvWZf/56AWqechnZpvfId5xN3YUQWBWQIrbfmmt99+9L5ZT48vev4qIf7x74vx+360um7v+6fQH1fzyiabWU9x5YzkIbmWX9t+7ewi76N7MJ2NlCSTvLD4TSgI2vokFEsnDrhWwv7/x+J1/9+Md2ozjFgwAQ64iHELvk7m2MO0d5hPaMhqzbsLkxD5zJqvUbexmvoLAau1OCfA2movrFrNP4HiRqqbPjqjLkLe5Vbs1ImfWNPfCvDKKpj3lpMnEAvjKKNZn8br3gz1SjaZcGVXzGBrplGC6z8jl0d0AslDbdl0m8L6JqYum0/HpQIiPPyWxlEBEREQEQERERARAREREBEBEREQEQERERARAREREBE/gNWMlf0LPIAIQAAAABJRU5ErkJggg=="/>
+<title>MindVault</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,500;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --ink: #1a0f0a; --ink2: #3d2415;
+  --paper: #f5efe6; --paper2: #ede4d6; --paper3: #e4d8c5;
+  --warm: #c17f4a; --warm2: #d4956a;
+  --accent: #8b4513; --accent2: #a0522d;
+  --green: #4a7c59; --red: #8b2635; --gold: #c9a84c;
+  --r: 14px; --nav-h: 68px;
+  --shadow: 0 4px 24px rgba(44,24,16,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body { font-family: 'Crimson Pro', Georgia, serif; background: var(--paper); color: var(--ink); min-height: 100vh; overflow-x: hidden; }
+body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:1000; opacity:.5; }
+body::after { content:''; position:fixed; inset:0; background:radial-gradient(ellipse 70% 50% at 30% 20%,rgba(193,127,74,.08) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(139,69,19,.06) 0%,transparent 50%); pointer-events:none; z-index:0; }
+.header { position:sticky; top:0; z-index:100; padding:14px 20px; background:rgba(245,239,230,.92); backdrop-filter:blur(16px); border-bottom:1.5px solid var(--paper3); display:flex; align-items:center; justify-content:space-between; }
+.logo { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; font-style:italic; color:var(--accent); letter-spacing:-.5px; }
+.logo span { color:var(--ink2); font-style:normal; }
+.logo .glm-tag { font-family:'JetBrains Mono',monospace; font-size:11px; font-style:normal; font-weight:700; color:var(--warm); background:rgba(193,127,74,.12); border:1px solid rgba(193,127,74,.25); border-radius:5px; padding:1px 6px; margin-left:6px; vertical-align:middle; }
+.header-right { display:flex; gap:8px; align-items:center; }
+.hdr-btn { width:36px; height:36px; border-radius:10px; background:var(--paper2); border:1.5px solid var(--paper3); color:var(--ink2); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.hdr-btn:hover { background:var(--paper3); }
+.stats-pill { display:flex; gap:12px; align-items:center; background:var(--paper2); border:1.5px solid var(--paper3); border-radius:20px; padding:6px 14px; font-size:13px; color:var(--ink2); }
+.stats-pill strong { color:var(--accent); font-weight:700; }
+.search-wrap { padding:14px 20px 0; position:relative; z-index:1; }
+.search-box { display:flex; gap:8px; align-items:center; background:var(--paper2); border:2px solid var(--paper3); border-radius:14px; padding:10px 14px; transition:border-color .2s; }
+.search-box:focus-within { border-color:var(--warm); }
+.search-icon { font-size:16px; color:var(--warm2); flex-shrink:0; }
+.search-inp { flex:1; background:none; border:none; outline:none; font-family:'Crimson Pro',serif; font-size:16px; color:var(--ink); }
+.search-inp::placeholder { color:rgba(61,36,21,.35); }
+.search-clear { background:none; border:none; color:var(--ink2); cursor:pointer; font-size:14px; opacity:0; transition:opacity .2s; padding:2px 4px; }
+.search-clear.show { opacity:1; }
+.ai-answer { margin:12px 20px 0; background:linear-gradient(135deg,rgba(193,127,74,.1),rgba(139,69,19,.06)); border:1.5px solid rgba(193,127,74,.3); border-radius:var(--r); padding:14px 16px; display:none; animation:fadeUp .3s ease; }
+.ai-answer.show { display:block; }
+.ai-answer-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--warm); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+.ai-answer-text { font-size:15px; line-height:1.7; color:var(--ink2); font-style:italic; }
+.ai-sources { margin-top:10px; display:flex; flex-wrap:wrap; gap:6px; }
+.ai-source-chip { font-size:11px; background:rgba(193,127,74,.15); border:1px solid rgba(193,127,74,.25); border-radius:6px; padding:3px 8px; color:var(--accent); cursor:pointer; font-family:'JetBrains Mono',monospace; }
+.ai-source-chip:hover { background:rgba(193,127,74,.25); }
+.add-section { padding:14px 20px 0; position:relative; z-index:1; }
+.add-tabs { display:flex; gap:4px; margin-bottom:10px; }
+.add-tab { flex:1; padding:8px; border-radius:10px; border:none; background:var(--paper2); color:var(--ink2); font-family:'Crimson Pro',serif; font-size:14px; cursor:pointer; transition:all .2s; text-align:center; }
+.add-tab.active { background:var(--accent); color:#fff; box-shadow:0 3px 12px rgba(139,69,19,.25); }
+.text-panel { display:block; }
+.voice-panel { display:none; }
+.entry-textarea { width:100%; min-height:100px; max-height:200px; background:var(--paper2); border:2px solid var(--paper3); border-radius:14px; padding:14px 16px; font-family:'Crimson Pro',serif; font-size:16px; line-height:1.6; color:var(--ink); resize:none; outline:none; transition:border-color .2s; }
+.entry-textarea:focus { border-color:var(--warm); }
+.entry-textarea::placeholder { color:rgba(61,36,21,.35); font-style:italic; }
+.entry-actions { display:flex; gap:8px; margin-top:8px; align-items:center; }
+.tag-inp { flex:1; background:var(--paper2); border:1.5px solid var(--paper3); border-radius:10px; padding:9px 12px; font-family:'Crimson Pro',serif; font-size:14px; color:var(--ink); outline:none; transition:border-color .2s; }
+.tag-inp:focus { border-color:var(--warm); }
+.tag-inp::placeholder { color:rgba(61,36,21,.35); }
+.save-btn { height:38px; padding:0 18px; border-radius:10px; background:var(--accent); border:none; color:#fff; font-family:'Crimson Pro',serif; font-size:15px; font-weight:500; cursor:pointer; white-space:nowrap; flex-shrink:0; box-shadow:0 3px 12px rgba(139,69,19,.3); transition:all .2s; }
+.save-btn:hover { background:var(--accent2); transform:translateY(-1px); }
+.ai-summarize-btn { height:38px; padding:0 14px; border-radius:10px; background:var(--paper2); border:1.5px solid var(--paper3); color:var(--ink2); font-family:'Crimson Pro',serif; font-size:14px; cursor:pointer; white-space:nowrap; flex-shrink:0; transition:all .2s; display:flex; align-items:center; gap:5px; }
+.ai-summarize-btn:hover { border-color:var(--warm); color:var(--warm); }
+.voice-center { display:flex; flex-direction:column; align-items:center; gap:16px; padding:20px 0; }
+.mic-ring { width:80px; height:80px; border-radius:50%; background:var(--paper2); border:3px solid var(--paper3); display:flex; align-items:center; justify-content:center; font-size:32px; cursor:pointer; transition:all .3s; position:relative; }
+.mic-ring::before { content:''; position:absolute; inset:-8px; border-radius:50%; border:2px solid transparent; transition:all .3s; }
+.mic-ring.recording { background:rgba(139,38,53,.1); border-color:var(--red); animation:micPulse 1.5s ease-in-out infinite; }
+.mic-ring.recording::before { border-color:rgba(139,38,53,.3); animation:ringExpand 1.5s ease-in-out infinite; }
+@keyframes micPulse { 0%,100%{box-shadow:0 0 0 0 rgba(139,38,53,.3);}50%{box-shadow:0 0 0 12px rgba(139,38,53,0);} }
+@keyframes ringExpand { 0%{transform:scale(1);opacity:1;}100%{transform:scale(1.5);opacity:0;} }
+.mic-status { font-size:14px; color:var(--ink2); font-style:italic; }
+.voice-transcript { width:100%; background:var(--paper2); border:1.5px solid var(--paper3); border-radius:12px; padding:12px 14px; font-size:15px; line-height:1.6; color:var(--ink); min-height:60px; font-style:italic; }
+.voice-actions { display:flex; gap:8px; width:100%; }
+.processing-bar { margin:10px 20px 0; background:var(--paper2); border-radius:8px; overflow:hidden; height:3px; display:none; }
+.processing-bar.show { display:block; }
+.processing-fill { height:100%; background:linear-gradient(90deg,var(--warm),var(--accent)); border-radius:8px; width:0; transition:width .4s ease; animation:shimmer 1.5s ease-in-out infinite; }
+@keyframes shimmer { 0%,100%{opacity:1;}50%{opacity:.6;} }
+.entries-wrap { padding:16px 20px; padding-bottom:calc(var(--nav-h) + 20px); }
+.section-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.section-title { font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--ink); }
+.section-count { font-size:12px; color:var(--ink2); background:var(--paper2); border:1px solid var(--paper3); border-radius:10px; padding:3px 10px; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);} }
+.entry-card { background:#fff; border:1.5px solid var(--paper3); border-radius:var(--r); padding:16px; margin-bottom:10px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden; animation:fadeUp .35s ease; box-shadow:var(--shadow); }
+.entry-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; border-radius:0 2px 2px 0; }
+.entry-card.text-type::before { background:var(--warm); }
+.entry-card.voice-type::before { background:var(--green); }
+.entry-card:hover { transform:translateY(-2px); box-shadow:0 8px 32px rgba(44,24,16,.15); }
+.entry-type-badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px; }
+.entry-type-badge.text { color:var(--warm); }
+.entry-type-badge.voice { color:var(--green); }
+.entry-title { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; line-height:1.3; margin-bottom:6px; color:var(--ink); }
+.entry-preview { font-size:15px; line-height:1.6; color:var(--ink2); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.entry-summary { margin-top:10px; padding:10px 12px; background:rgba(193,127,74,.08); border-left:3px solid var(--warm2); border-radius:0 8px 8px 0; font-size:14px; line-height:1.6; color:var(--ink2); font-style:italic; }
+.entry-footer { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; align-items:center; }
+.entry-tag { font-size:12px; background:var(--paper); border:1px solid var(--paper3); border-radius:6px; padding:2px 8px; color:var(--ink2); font-family:'JetBrains Mono',monospace; }
+.entry-date { font-size:12px; color:rgba(61,36,21,.45); margin-left:auto; }
+.entry-actions-row { position:absolute; top:12px; right:12px; display:flex; gap:4px; opacity:0; transition:opacity .2s; }
+.entry-card:hover .entry-actions-row { opacity:1; }
+.entry-act { width:28px; height:28px; border-radius:8px; background:var(--paper); border:1px solid var(--paper3); color:var(--ink2); cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.entry-act:hover { background:var(--paper3); }
+.entry-act.del:hover { color:var(--red); border-color:var(--red); background:rgba(139,38,53,.08); }
+.empty-state { text-align:center; padding:60px 20px; color:var(--ink2); }
+.empty-icon { font-size:56px; margin-bottom:16px; opacity:.4; }
+.empty-title { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; margin-bottom:8px; color:var(--ink); }
+.empty-sub { font-size:15px; line-height:1.6; font-style:italic; }
+.detail-view { position:fixed; inset:0; background:var(--paper); z-index:300; overflow-y:auto; transform:translateX(100%); transition:transform .3s ease; }
+.detail-view.open { transform:translateX(0); }
+.detail-top { position:sticky; top:0; z-index:10; background:rgba(245,239,230,.95); backdrop-filter:blur(16px); border-bottom:1.5px solid var(--paper3); padding:14px 20px; display:flex; align-items:center; gap:12px; }
+.back-btn { background:none; border:none; color:var(--accent); font-family:'Playfair Display',serif; font-size:15px; cursor:pointer; display:flex; align-items:center; gap:6px; font-weight:700; }
+.detail-content { padding:24px 20px; }
+.detail-title-inp { width:100%; background:none; border:none; outline:none; font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:var(--ink); line-height:1.2; margin-bottom:16px; resize:none; }
+.detail-body { width:100%; min-height:200px; background:none; border:none; outline:none; resize:none; font-family:'Crimson Pro',serif; font-size:17px; line-height:1.8; color:var(--ink2); }
+.detail-divider { height:1.5px; background:var(--paper3); margin:20px 0; }
+.detail-summary-box { background:rgba(193,127,74,.08); border:1.5px solid rgba(193,127,74,.2); border-radius:12px; padding:16px; }
+.detail-summary-label { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--warm); margin-bottom:10px; display:flex; align-items:center; gap:6px; }
+.detail-summary-text { font-size:16px; line-height:1.7; color:var(--ink2); font-style:italic; }
+.chat-label { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; color:var(--ink); margin-bottom:12px; }
+.chat-messages { display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+.chat-msg { padding:10px 14px; border-radius:12px; font-size:15px; line-height:1.6; max-width:90%; }
+.chat-msg.user { background:var(--accent); color:#fff; align-self:flex-end; border-radius:12px 12px 2px 12px; }
+.chat-msg.ai { background:var(--paper2); border:1.5px solid var(--paper3); color:var(--ink2); font-style:italic; align-self:flex-start; border-radius:12px 12px 12px 2px; }
+.chat-inp-row { display:flex; gap:8px; }
+.chat-inp { flex:1; background:var(--paper2); border:2px solid var(--paper3); border-radius:12px; padding:10px 14px; font-family:'Crimson Pro',serif; font-size:15px; color:var(--ink); outline:none; transition:border-color .2s; }
+.chat-inp:focus { border-color:var(--warm); }
+.chat-send { width:42px; height:42px; border-radius:12px; background:var(--accent); border:none; color:#fff; font-size:18px; cursor:pointer; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.chat-send:hover { background:var(--accent2); }
+.bottom-nav { position:fixed; bottom:0; left:0; right:0; height:var(--nav-h); background:rgba(245,239,230,.95); backdrop-filter:blur(16px); border-top:1.5px solid var(--paper3); display:flex; align-items:center; justify-content:space-around; z-index:200; padding-bottom:env(safe-area-inset-bottom); }
+.nav-item { display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none; color:rgba(61,36,21,.4); font-family:'Crimson Pro',serif; font-size:11px; font-weight:500; cursor:pointer; padding:8px 16px; border-radius:12px; transition:all .2s; flex:1; }
+.nav-item.active { color:var(--accent); }
+.nav-item.active .nav-icon { transform:scale(1.15); }
+.nav-icon { font-size:22px; line-height:1; transition:transform .2s; }
+.toast { position:fixed; bottom:calc(var(--nav-h) + 12px); left:50%; transform:translateX(-50%) translateY(20px); background:var(--ink); border-radius:12px; padding:10px 20px; font-size:14px; color:#fff; opacity:0; transition:all .3s; z-index:999; white-space:nowrap; box-shadow:0 4px 20px rgba(0,0,0,.3); }
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+.tags-view { padding:16px 20px; padding-bottom:calc(var(--nav-h) + 20px); }
+.tags-grid { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+.tag-filter { padding:7px 16px; border-radius:20px; background:var(--paper2); border:1.5px solid var(--paper3); color:var(--ink2); font-family:'Crimson Pro',serif; font-size:14px; cursor:pointer; transition:all .2s; }
+.tag-filter.active { background:var(--accent); border-color:var(--accent); color:#fff; }
+.thinking { display:flex; gap:4px; align-items:center; padding:4px 0; }
+.t-dot { width:6px; height:6px; border-radius:50%; background:var(--warm); animation:tdot .8s ease-in-out infinite; }
+.t-dot:nth-child(2){animation-delay:.15s;} .t-dot:nth-child(3){animation-delay:.3s;}
+@keyframes tdot{0%,80%,100%{transform:translateY(0);}40%{transform:translateY(-5px);}}
+@media(min-width:768px){ .entries-wrap{max-width:720px;margin:0 auto;} .add-section,.search-wrap{max-width:720px;margin-left:auto;margin-right:auto;} .detail-content{max-width:680px;margin:0 auto;} }
+.cards-section { margin-top:20px; }
+.cards-label { font-family:'Playfair Display',serif; font-size:16px; font-weight:700; color:var(--ink); margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; }
+.gen-cards-btn { padding:7px 16px; border-radius:10px; background:var(--paper2); border:1.5px solid var(--paper3); color:var(--ink2); font-family:'Crimson Pro',serif; font-size:14px; cursor:pointer; transition:all .2s; display:flex; align-items:center; gap:5px; }
+.gen-cards-btn:hover { border-color:var(--gold); color:var(--gold); }
+.cards-grid { display:flex; flex-direction:column; gap:10px; }
+.flashcard { background:#fff; border:1.5px solid var(--paper3); border-radius:14px; cursor:pointer; box-shadow:var(--shadow); transition:all .25s; overflow:hidden; }
+.flashcard:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(44,24,16,.15); }
+.card-question { padding:16px 16px 12px; font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--ink); display:flex; gap:10px; align-items:flex-start; }
+.card-q-icon { width:24px; height:24px; border-radius:50%; flex-shrink:0; background:rgba(193,127,74,.15); border:1.5px solid rgba(193,127,74,.3); display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:var(--warm); margin-top:2px; }
+.card-answer { padding:0 16px 16px 50px; font-size:15px; line-height:1.6; color:var(--ink2); font-style:italic; display:none; border-top:1px dashed var(--paper3); padding-top:12px; }
+.card-answer.show { display:block; }
+.card-footer { padding:0 16px 12px 50px; display:none; gap:8px; }
+.card-footer.show { display:flex; }
+.card-rate { flex:1; padding:7px; border-radius:9px; border:none; font-family:'Crimson Pro',serif; font-size:13px; font-weight:600; cursor:pointer; transition:all .2s; text-align:center; }
+.card-rate.know { background:rgba(74,124,89,.12); border:1.5px solid rgba(74,124,89,.25); color:var(--green); }
+.card-rate.know:hover { background:rgba(74,124,89,.2); }
+.card-rate.again { background:rgba(139,38,53,.08); border:1.5px solid rgba(139,38,53,.2); color:var(--red); }
+.card-rate.again:hover { background:rgba(139,38,53,.15); }
+.card-known { opacity:.45; }
+.cards-progress { display:flex; align-items:center; gap:10px; margin-bottom:12px; font-size:13px; color:var(--ink2); }
+.cards-prog-bar { flex:1; height:6px; background:var(--paper3); border-radius:3px; overflow:hidden; }
+.cards-prog-fill { height:100%; background:linear-gradient(90deg,var(--green),#6abf7c); border-radius:3px; transition:width .4s ease; }
+.cards-done { text-align:center; padding:20px; font-family:'Playfair Display',serif; font-size:18px; font-weight:700; color:var(--green); display:none; }
+.cards-done.show { display:block; }
+.pdf-upload-btn { display:flex; align-items:center; gap:6px; padding:8px 14px; border-radius:10px; background:var(--paper2); border:1.5px dashed var(--paper3); color:var(--ink2); font-family:'Crimson Pro',serif; font-size:14px; cursor:pointer; transition:all .2s; width:100%; margin-bottom:8px; justify-content:center; }
+.pdf-upload-btn:hover { border-color:var(--warm); color:var(--warm); background:rgba(193,127,74,.06); }
+.pdf-upload-btn input { display:none; }
+.pdf-loading { display:none; text-align:center; padding:12px; font-size:14px; color:var(--warm); font-style:italic; }
+.pdf-info { display:none; padding:8px 12px; border-radius:10px; background:rgba(74,124,89,.08); border:1px solid rgba(74,124,89,.2); font-size:13px; color:var(--green); margin-bottom:8px; align-items:center; gap:8px; }
+.pdf-info.show { display:flex; }
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">Mind<span>Vault</span> <span class="glm-tag">GLM</span></div>
+  <div class="header-right">
+    <div class="stats-pill"><span>📚 <strong id="totalCount">0</strong></span></div>
+    <button class="hdr-btn" title="GLM API Ключ (z.ai)" onclick="resetApiKey()">🔑</button>
+    <button class="hdr-btn" id="exportBtn" title="Экспорт">⬇</button>
+  </div>
+</header>
+<div class="search-wrap" id="mainSearch">
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input class="search-inp" id="searchInp" placeholder="Спроси о своих знаниях..."/>
+    <button class="search-clear" id="searchClear">✕</button>
+  </div>
+</div>
+<div class="ai-answer" id="aiAnswer">
+  <div class="ai-answer-label">✦ MindVault отвечает</div>
+  <div class="ai-answer-text" id="aiAnswerText"></div>
+  <div class="ai-sources" id="aiSources"></div>
+</div>
+<div class="processing-bar" id="procBar"><div class="processing-fill" id="procFill"></div></div>
+<div class="add-section" id="addSection">
+  <div class="add-tabs">
+    <button class="add-tab active" id="tabText" onclick="switchTab('text')">✍️ Текст</button>
+    <button class="add-tab" id="tabVoice" onclick="switchTab('voice')">🎙 Голос</button>
+  </div>
+  <div class="text-panel" id="textPanel">
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <label class="pdf-upload-btn" style="flex:1;margin-bottom:0">📄 PDF<input type="file" id="pdfFileInp" accept=".pdf"/></label>
+      <label class="pdf-upload-btn" style="flex:1;margin-bottom:0">🖼 Скан / Фото<input type="file" id="ocrFileInp" accept="image/*,.pdf"/></label>
+    </div>
+    <div class="pdf-loading" id="pdfLoading">📄 Извлекаю текст...</div>
+    <div class="pdf-loading" id="ocrLoading" style="display:none">🔍 OCR... <span id="ocrProgress"></span></div>
+    <div class="pdf-info" id="pdfInfo"><span>✓</span><span id="pdfInfoText"></span></div>
+    <textarea class="entry-textarea" id="entryText" placeholder="Запиши мысль, идею, конспект статьи, цитату..."></textarea>
+    <div class="entry-actions">
+      <input class="tag-inp" id="tagInp" placeholder="#тег"/>
+      <button class="ai-summarize-btn" id="summarizeBtn">✦ AI резюме</button>
+      <button class="save-btn" id="saveTextBtn">Сохранить</button>
+    </div>
+  </div>
+  <div class="voice-panel" id="voicePanel">
+    <div class="voice-center">
+      <div class="mic-ring" id="micRing">🎙</div>
+      <div class="mic-status" id="micStatus">Нажми чтобы начать запись</div>
+      <div class="voice-transcript" id="voiceTranscript" style="display:none"></div>
+      <div class="voice-actions" id="voiceActions" style="display:none">
+        <button class="ai-summarize-btn" style="flex:1" id="voiceSummarizeBtn">✦ AI резюме</button>
+        <button class="save-btn" id="saveVoiceBtn">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="homeView">
+  <div class="entries-wrap">
+    <div class="section-hdr">
+      <div class="section-title" id="sectionTitle">Последние записи</div>
+      <span class="section-count" id="sectionCount">0</span>
+    </div>
+    <div id="entriesList"></div>
+  </div>
+</div>
+<div id="tagsView" style="display:none">
+  <div class="tags-view">
+    <div class="section-hdr"><div class="section-title">Теги</div></div>
+    <div class="tags-grid" id="tagsGrid"></div>
+    <div id="tagEntriesList"></div>
+  </div>
+</div>
+<div class="detail-view" id="detailView">
+  <div class="detail-top">
+    <button class="back-btn" id="backBtn">← Назад</button>
+    <div style="margin-left:auto;display:flex;gap:8px">
+      <button class="entry-act del" id="detailDelBtn" title="Удалить">🗑</button>
+    </div>
+  </div>
+  <div class="detail-content">
+    <textarea class="detail-title-inp" id="detailTitle" rows="1" placeholder="Заголовок..."></textarea>
+    <textarea class="detail-body" id="detailBody" placeholder="Текст записи..."></textarea>
+    <div class="detail-divider"></div>
+    <div class="detail-summary-box" id="detailSummaryBox" style="display:none">
+      <div class="detail-summary-label">✦ AI резюме</div>
+      <div class="detail-summary-text" id="detailSummaryText"></div>
+    </div>
+    <div class="cards-section" id="cardsSection" style="display:none">
+      <div class="cards-label">🃏 Флэш-карточки <button class="gen-cards-btn" id="genCardsBtn">✦ Сгенерировать</button></div>
+      <div class="cards-progress" id="cardsProgress" style="display:none">
+        <span id="cardsProgressText">0 / 0</span>
+        <div class="cards-prog-bar"><div class="cards-prog-fill" id="cardsProgFill" style="width:0"></div></div>
+      </div>
+      <div class="cards-grid" id="cardsGrid"></div>
+      <div class="cards-done" id="cardsDone">🎉 Все карточки пройдены!<br><span style="font-size:14px;font-weight:400;font-family:'Crimson Pro',serif;color:var(--ink2)">Повтори снова завтра</span></div>
+    </div>
+    <div class="detail-divider"></div>
+    <div class="detail-chat" id="detailChat">
+      <div class="chat-label" style="margin-top:20px">💬 Спроси об этой записи</div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-inp-row">
+        <input class="chat-inp" id="chatInp" placeholder="Что значит эта идея для меня?"/>
+        <button class="chat-send" id="chatSend">→</button>
+      </div>
+    </div>
+  </div>
+</div>
+<nav class="bottom-nav">
+  <button class="nav-item active" id="navHome" onclick="setView('home')"><div class="nav-icon">📖</div><span>База</span></button>
+  <button class="nav-item" id="navTags" onclick="setView('tags')"><div class="nav-icon">🏷</div><span>Теги</span></button>
+  <button class="nav-item" id="navStats" onclick="setView('stats')"><div class="nav-icon">📊</div><span>Итоги</span></button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+// ── GLM-4.7-Flash (Z.AI / Zhipu AI) — бесплатно, без лимитов ────────────
+// Международный домен: api.z.ai  |  Китайский: open.bigmodel.cn
+// Используем api.z.ai — работает везде включая Россию
+const GLM_URL = 'https://api.z.ai/api/paas/v4/chat/completions';
+const MODEL   = 'glm-4.7-flash';
+
+let entries = [], curEntry = null, curView = 'home', activeTag = null;
+let voiceText = '', searchTimer = null, rec = null, isRecording = false;
+
+function save() { localStorage.setItem('mv_entries', JSON.stringify(entries)); }
+function load() { try { entries = JSON.parse(localStorage.getItem('mv_entries') || '[]'); } catch(e) { entries = []; } }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function toast(msg, dur=2800) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), dur);
+}
+function fmtDate(ts) {
+  const d = new Date(ts), now = new Date(), diff = now - d;
+  if (diff < 60000) return 'только что';
+  if (diff < 3600000) return Math.floor(diff/60000) + ' мин назад';
+  if (diff < 86400000) return Math.floor(diff/3600000) + ' ч назад';
+  if (diff < 7*86400000) return Math.floor(diff/86400000) + ' дн назад';
+  return d.toLocaleDateString('ru', {day:'numeric', month:'short'});
+}
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function autoResize(el) { el.style.height='auto'; el.style.height=el.scrollHeight+'px'; }
+function progress(show, pct=0) {
+  const bar = document.getElementById('procBar'), fill = document.getElementById('procFill');
+  if (show) { bar.classList.add('show'); fill.style.width = pct+'%'; }
+  else { bar.classList.remove('show'); fill.style.width='0'; }
+}
+
+// ── API KEY ────────────────────────────────────────────────────────────────
+function getApiKey() {
+  let key = localStorage.getItem('mv_glm_key');
+  if (!key) {
+    key = prompt(
+      'Введи GLM API ключ:\n\n' +
+      '1. Зайди на z.ai (или open.bigmodel.cn)\n' +
+      '2. Sign Up → API Keys → Create Key\n' +
+      '3. Вставь ключ сюда\n\n' +
+      'GLM-4.7-Flash — бесплатно, без лимитов!'
+    );
+    if (key && key.trim().length > 10) {
+      localStorage.setItem('mv_glm_key', key.trim());
+    } else {
+      toast('Ключ не введён. AI-функции недоступны.'); return null;
+    }
+  }
+  return key;
+}
+
+// ── AI CALL ────────────────────────────────────────────────────────────────
+async function callClaude(prompt, system='') {
+  const apiKey = getApiKey();
+  if (!apiKey) throw new Error('No API key');
+  const messages = [];
+  if (system) messages.push({role:'system', content: system});
+  messages.push({role:'user', content: prompt});
+  const r = await fetch(GLM_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + apiKey
+    },
+    body: JSON.stringify({ model: MODEL, max_tokens: 1000, messages })
+  });
+  if (!r.ok) {
+    if (r.status === 401) { localStorage.removeItem('mv_glm_key'); throw new Error('Неверный GLM ключ'); }
+    const errTxt = await r.text().catch(() => '');
+    throw new Error('API error ' + r.status + ': ' + errTxt.slice(0, 100));
+  }
+  const d = await r.json();
+  return d.choices?.[0]?.message?.content || '';
+}
+
+async function summarizeText(text) {
+  return await callClaude(
+    `Текст: "${text}"\n\nСделай краткое резюме (2-3 предложения) на русском языке. Выдели главную мысль и ключевые идеи. Только резюме, без преамбул.`,
+    'Ты помогаешь создавать краткие и точные резюме для личной базы знаний.'
+  );
+}
+async function generateTitle(text) {
+  return await callClaude(
+    `Текст: "${text.slice(0,500)}"\n\nПридумай короткий, ёмкий заголовок (до 8 слов) на русском языке. Только заголовок, без кавычек.`,
+    'Ты придумываешь заголовки для заметок.'
+  );
+}
+
+async function saveEntry(text, tags, type='text') {
+  if (!text.trim()) { toast('Введи текст'); return; }
+  const entry = { id: uid(), text: text.trim(), tags: parseTags(tags), type, createdAt: Date.now(), title: '', summary: '' };
+  progress(true, 20);
+  try {
+    entry.title = await generateTitle(text);
+    progress(true, 55);
+    if (text.length > 200) entry.summary = await summarizeText(text);
+    progress(true, 90);
+  } catch(e) {
+    entry.title = text.slice(0,50) + (text.length>50?'...':'');
+    toast('AI недоступен, заголовок создан автоматически');
+  }
+  progress(false);
+  entries.unshift(entry);
+  save(); renderEntries(); updateStats();
+  toast('✓ Запись сохранена');
+  return entry;
+}
+function parseTags(str) { return str.split(/[\s,]+/).map(t=>t.replace(/^#/,'').trim()).filter(Boolean); }
+
+document.getElementById('summarizeBtn').onclick = async () => {
+  const text = document.getElementById('entryText').value.trim();
+  if (!text) { toast('Введи текст для резюме'); return; }
+  const btn = document.getElementById('summarizeBtn');
+  btn.disabled = true; btn.textContent = '✦ ...'; progress(true, 30);
+  try {
+    const summary = await summarizeText(text);
+    let prev = document.getElementById('inlineSummary');
+    if (!prev) { prev = document.createElement('div'); prev.id='inlineSummary'; prev.className='entry-summary'; prev.style.marginTop='10px'; document.getElementById('textPanel').appendChild(prev); }
+    prev.textContent = summary; progress(false);
+  } catch(e) { toast('Ошибка AI: ' + e.message); progress(false); }
+  btn.disabled = false; btn.innerHTML = '✦ AI резюме';
+};
+
+document.getElementById('saveTextBtn').onclick = async () => {
+  const entry = await saveEntry(document.getElementById('entryText').value, document.getElementById('tagInp').value, 'text');
+  if (entry) {
+    document.getElementById('entryText').value = '';
+    document.getElementById('tagInp').value = '';
+    const prev = document.getElementById('inlineSummary');
+    if (prev) prev.remove();
+  }
+};
+
+function initVoice() {
+  const Rec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!Rec) { document.getElementById('tabVoice').style.display='none'; return; }
+  rec = new Rec(); rec.lang='ru-RU'; rec.continuous=true; rec.interimResults=true;
+  rec.onresult = e => {
+    let t=''; for (let i=e.resultIndex;i<e.results.length;i++) t+=e.results[i][0].transcript;
+    voiceText=t;
+    const vt=document.getElementById('voiceTranscript'); vt.style.display='block'; vt.textContent=t;
+    document.getElementById('voiceActions').style.display='flex';
+  };
+  rec.onend = () => { isRecording=false; document.getElementById('micRing').classList.remove('recording'); document.getElementById('micStatus').textContent=voiceText?'Запись завершена':'Нажми чтобы начать запись'; };
+}
+document.getElementById('micRing').onclick = () => {
+  if (!rec) { toast('Голосовой ввод недоступен'); return; }
+  if (isRecording) { rec.stop(); isRecording=false; document.getElementById('micRing').classList.remove('recording'); document.getElementById('micStatus').textContent='Обработка...'; }
+  else { voiceText=''; document.getElementById('voiceTranscript').style.display='none'; document.getElementById('voiceActions').style.display='none'; rec.start(); isRecording=true; document.getElementById('micRing').classList.add('recording'); document.getElementById('micStatus').textContent='🔴 Запись идёт... нажми чтобы остановить'; }
+};
+document.getElementById('voiceSummarizeBtn').onclick = async () => {
+  if (!voiceText) { toast('Нет текста'); return; }
+  const btn=document.getElementById('voiceSummarizeBtn'); btn.disabled=true; progress(true,40);
+  const summary=await summarizeText(voiceText);
+  document.getElementById('voiceTranscript').innerHTML=esc(voiceText)+`<div class="entry-summary" style="margin-top:10px">${esc(summary)}</div>`;
+  progress(false); btn.disabled=false;
+};
+document.getElementById('saveVoiceBtn').onclick = async () => {
+  if (!voiceText) { toast('Нет текста'); return; }
+  const entry=await saveEntry(voiceText,'','voice');
+  if (entry) { voiceText=''; document.getElementById('voiceTranscript').style.display='none'; document.getElementById('voiceActions').style.display='none'; document.getElementById('micStatus').textContent='Нажми чтобы начать запись'; switchTab('text'); }
+};
+
+document.getElementById('searchInp').oninput = e => {
+  const q=e.target.value.trim();
+  document.getElementById('searchClear').classList.toggle('show',!!q);
+  clearTimeout(searchTimer);
+  if (!q) { hideAiAnswer(); renderEntries(); return; }
+  renderEntries(q);
+  searchTimer=setTimeout(()=>{ if(q.length>5) aiSearch(q); },800);
+};
+document.getElementById('searchClear').onclick = () => { document.getElementById('searchInp').value=''; document.getElementById('searchClear').classList.remove('show'); hideAiAnswer(); renderEntries(); };
+
+async function aiSearch(q) {
+  if (!entries.length) return;
+  const ctx=entries.slice(0,15).map((e,i)=>`[${i+1}] "${e.title}": ${e.text.slice(0,300)}`).join('\n\n');
+  progress(true,30);
+  try {
+    const ans=await callClaude(`Вопрос: "${q}"\n\nМои записи:\n${ctx}\n\nОтветь на вопрос используя мои записи. Укажи номера [N] источников. Кратко, по существу.`,'Ты умный поисковик по личной базе знаний. Отвечай на русском, кратко и точно.');
+    progress(true,90); showAiAnswer(ans,q);
+  } catch(e) { toast('Ошибка AI: '+e.message); }
+  progress(false);
+}
+function showAiAnswer(text,q) {
+  document.getElementById('aiAnswerText').textContent=text;
+  const refs=[...text.matchAll(/\[(\d+)\]/g)].map(m=>parseInt(m[1])-1);
+  const unique=[...new Set(refs)].filter(i=>entries[i]);
+  const src=document.getElementById('aiSources'); src.innerHTML='';
+  if (unique.length) {
+    const lbl=document.createElement('span'); lbl.style.cssText='font-size:11px;color:var(--ink2);font-style:italic;margin-right:4px'; lbl.textContent='Источники:'; src.appendChild(lbl);
+    unique.forEach(i=>{ const chip=document.createElement('span'); chip.className='ai-source-chip'; chip.textContent=entries[i].title.slice(0,30); chip.onclick=()=>openDetail(entries[i].id); src.appendChild(chip); });
+  }
+  document.getElementById('aiAnswer').classList.add('show');
+}
+function hideAiAnswer() { document.getElementById('aiAnswer').classList.remove('show'); }
+
+function renderEntries(query='') {
+  const list=document.getElementById('entriesList');
+  let filtered=entries;
+  if (query) { const q=query.toLowerCase(); filtered=entries.filter(e=>e.title.toLowerCase().includes(q)||e.text.toLowerCase().includes(q)||(e.summary||'').toLowerCase().includes(q)||e.tags.some(t=>t.toLowerCase().includes(q))); }
+  document.getElementById('sectionTitle').textContent=query?`Результаты: «${query}»`:'Последние записи';
+  document.getElementById('sectionCount').textContent=filtered.length;
+  if (!filtered.length) { list.innerHTML=`<div class="empty-state"><div class="empty-icon">${query?'🔍':'📖'}</div><div class="empty-title">${query?'Ничего не найдено':'База знаний пуста'}</div><div class="empty-sub">${query?'Попробуй другой запрос':'Добавь первую запись — мысль, идею или конспект'}</div></div>`; return; }
+  list.innerHTML=''; filtered.forEach(e=>list.appendChild(buildCard(e)));
+}
+function buildCard(e) {
+  const card=document.createElement('div'); card.className='entry-card '+(e.type==='voice'?'voice-type':'text-type');
+  card.innerHTML=`<div class="entry-actions-row"><button class="entry-act del" onclick="deleteEntry('${e.id}',event)">✕</button></div><div class="entry-type-badge ${e.type==='voice'?'voice':'text'}">${e.type==='voice'?'🎙 Голосовая':'✍️ Текстовая'}</div><div class="entry-title">${esc(e.title||'Без заголовка')}</div><div class="entry-preview">${esc(e.text)}</div>${e.summary?`<div class="entry-summary">${esc(e.summary)}</div>`:''}<div class="entry-footer">${e.tags.map(t=>`<span class="entry-tag">#${esc(t)}</span>`).join('')}<span class="entry-date">${fmtDate(e.createdAt)}</span></div>`;
+  card.onclick=ev=>{ if(!ev.target.classList.contains('entry-act')) openDetail(e.id); };
+  return card;
+}
+
+function openDetail(id) {
+  curEntry=entries.find(e=>e.id===id); if (!curEntry) return;
+  document.getElementById('detailTitle').value=curEntry.title||'';
+  document.getElementById('detailBody').value=curEntry.text||'';
+  const sb=document.getElementById('detailSummaryBox');
+  if (curEntry.summary) { sb.style.display='block'; document.getElementById('detailSummaryText').textContent=curEntry.summary; } else sb.style.display='none';
+  document.getElementById('chatMessages').innerHTML='';
+  curCards=curEntry.cards||[]; cardsKnown=new Set();
+  document.getElementById('cardsSection').style.display='block';
+  document.getElementById('genCardsBtn').textContent=curCards.length?'✦ Обновить':'✦ Сгенерировать';
+  if (curCards.length) renderCards(); else { document.getElementById('cardsGrid').innerHTML=''; document.getElementById('cardsProgress').style.display='none'; document.getElementById('cardsDone').classList.remove('show'); }
+  document.getElementById('detailView').classList.add('open');
+  autoResize(document.getElementById('detailTitle')); autoResize(document.getElementById('detailBody'));
+}
+document.getElementById('backBtn').onclick = () => {
+  if (curEntry) { curEntry.title=document.getElementById('detailTitle').value; curEntry.text=document.getElementById('detailBody').value; save(); renderEntries(); }
+  document.getElementById('detailView').classList.remove('open');
+};
+document.getElementById('detailDelBtn').onclick = () => { if (!curEntry) return; deleteEntry(curEntry.id); document.getElementById('detailView').classList.remove('open'); };
+
+document.getElementById('chatSend').onclick=sendChat;
+document.getElementById('chatInp').onkeydown=e=>{ if(e.key==='Enter') sendChat(); };
+async function sendChat() {
+  if (!curEntry) return;
+  const inp=document.getElementById('chatInp'); const q=inp.value.trim(); if (!q) return; inp.value='';
+  const msgs=document.getElementById('chatMessages');
+  const ub=document.createElement('div'); ub.className='chat-msg user'; ub.textContent=q; msgs.appendChild(ub);
+  const tb=document.createElement('div'); tb.className='chat-msg ai'; tb.innerHTML='<div class="thinking"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>'; msgs.appendChild(tb); msgs.scrollTop=msgs.scrollHeight;
+  try { const ans=await callClaude(`Запись: "${curEntry.title}"\n\nТекст: "${curEntry.text}"\n\nВопрос: "${q}"\n\nОтветь, опираясь на содержание записи.`,'Ты помогаешь осмыслить личные заметки. Отвечай кратко, по-русски, в дружеском тоне.'); tb.innerHTML=ans; }
+  catch(e) { tb.textContent='Ошибка: '+e.message; }
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function deleteEntry(id,e) { if(e) e.stopPropagation(); entries=entries.filter(x=>x.id!==id); save(); renderEntries(); renderTags(); updateStats(); toast('Запись удалена'); }
+window.deleteEntry=deleteEntry;
+
+let curCards=[], cardsKnown=new Set();
+async function generateCards() {
+  if (!curEntry) return;
+  const btn=document.getElementById('genCardsBtn'); btn.disabled=true; btn.textContent='✦ Генерирую...'; progress(true,30);
+  try {
+    const result=await callClaude(`Текст: "${curEntry.text.slice(0,2000)}"\n\nСоздай 6-8 флэш-карточек.\nФормат JSON:\n[{"q":"вопрос","a":"ответ"}]\nТолько JSON, без пояснений.`,'Создаёшь флэш-карточки. Только JSON.');
+    const clean=result.replace(/```json|```/g,'').trim();
+    curCards=JSON.parse(clean); cardsKnown=new Set(); curEntry.cards=curCards; save(); renderCards(); progress(false);
+  } catch(e) { toast('Ошибка: '+e.message); progress(false); }
+  btn.disabled=false; btn.textContent='✦ Обновить';
+}
+function renderCards() {
+  const grid=document.getElementById('cardsGrid'), done=document.getElementById('cardsDone');
+  grid.innerHTML=''; if (!curCards.length) return;
+  document.getElementById('cardsProgress').style.display='flex'; updateCardsProgress();
+  curCards.forEach((card,i)=>{ const div=document.createElement('div'); div.className='flashcard'+(cardsKnown.has(i)?' card-known':''); div.innerHTML=`<div class="card-question" onclick="toggleCard(${i})"><div class="card-q-icon">Q</div><span>${esc(card.q)}</span></div><div class="card-answer" id="card-ans-${i}">${esc(card.a)}</div><div class="card-footer" id="card-foot-${i}"><button class="card-rate know" onclick="rateCard(${i},true)">✓ Знаю</button><button class="card-rate again" onclick="rateCard(${i},false)">↺ Ещё раз</button></div>`; grid.appendChild(div); });
+  done.classList.toggle('show', cardsKnown.size===curCards.length);
+}
+window.toggleCard=function(i){ document.getElementById('card-ans-'+i).classList.toggle('show'); document.getElementById('card-foot-'+i).classList.toggle('show'); };
+window.rateCard=function(i,knew){ if(knew) cardsKnown.add(i); else cardsKnown.delete(i); updateCardsProgress(); document.getElementById('card-ans-'+i).classList.remove('show'); document.getElementById('card-foot-'+i).classList.remove('show'); document.getElementById('cardsDone').classList.toggle('show',cardsKnown.size===curCards.length); };
+function updateCardsProgress() { const t=curCards.length,k=cardsKnown.size; document.getElementById('cardsProgressText').textContent=k+' / '+t; document.getElementById('cardsProgFill').style.width=(t?k/t*100:0)+'%'; }
+document.getElementById('genCardsBtn').onclick=generateCards;
+
+function renderTags() {
+  const allTags=[...new Set(entries.flatMap(e=>e.tags))].sort(); const grid=document.getElementById('tagsGrid'); grid.innerHTML='';
+  if (!allTags.length) { grid.innerHTML='<div style="color:var(--ink2);font-style:italic;font-size:14px">Тегов пока нет — добавь #тег при сохранении</div>'; return; }
+  allTags.forEach(tag=>{ const cnt=entries.filter(e=>e.tags.includes(tag)).length; const btn=document.createElement('button'); btn.className='tag-filter'+(activeTag===tag?' active':''); btn.textContent=`#${tag} (${cnt})`; btn.onclick=()=>{ activeTag=activeTag===tag?null:tag; renderTags(); const tl=document.getElementById('tagEntriesList'); tl.innerHTML=''; if(activeTag) entries.filter(e=>e.tags.includes(activeTag)).forEach(e=>tl.appendChild(buildCard(e))); }; grid.appendChild(btn); });
+}
+
+function showStats() {
+  const total=entries.length, texts=entries.filter(e=>e.type==='text').length, voices=entries.filter(e=>e.type==='voice').length;
+  const withSummary=entries.filter(e=>e.summary).length, allTags=[...new Set(entries.flatMap(e=>e.tags))];
+  const today=entries.filter(e=>new Date(e.createdAt).toDateString()===new Date().toDateString()).length;
+  document.getElementById('homeView').innerHTML=`<div class="entries-wrap"><div class="section-hdr"><div class="section-title">Статистика</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">${statCard('📚','Всего записей',total)}${statCard('✍️','Текстовых',texts)}${statCard('🎙','Голосовых',voices)}${statCard('✦','С AI резюме',withSummary)}${statCard('🏷','Уникальных тегов',allTags.length)}${statCard('📅','Сегодня добавлено',today)}</div>${allTags.length?`<div class="section-title" style="margin-bottom:12px">Топ теги</div><div class="tags-grid">${allTags.slice(0,12).map(t=>`<span class="tag-filter">#${esc(t)}</span>`).join('')}</div>`:''}<div style="margin-top:16px;padding:12px 14px;background:rgba(193,127,74,.08);border:1.5px solid rgba(193,127,74,.2);border-radius:12px;font-size:13px;color:var(--ink2)">🤖 AI: <strong style="color:var(--accent)">GLM-4.7-Flash</strong> — бесплатно, без лимитов</div></div>`;
+}
+function statCard(icon,label,val) { return `<div style="background:#fff;border:1.5px solid var(--paper3);border-radius:14px;padding:16px;box-shadow:var(--shadow)"><div style="font-size:24px;margin-bottom:6px">${icon}</div><div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--accent)">${val}</div><div style="font-size:13px;color:var(--ink2);margin-top:2px">${label}</div></div>`; }
+
+function setView(v) {
+  curView=v; ['navHome','navTags','navStats'].forEach(id=>document.getElementById(id).classList.remove('active'));
+  const hv=document.getElementById('homeView'), tv=document.getElementById('tagsView'), as=document.getElementById('addSection'), ms=document.getElementById('mainSearch');
+  if (v==='home') { document.getElementById('navHome').classList.add('active'); hv.style.display='block'; tv.style.display='none'; as.style.display='block'; ms.style.display='block'; renderEntries(); }
+  else if (v==='tags') { document.getElementById('navTags').classList.add('active'); hv.style.display='none'; tv.style.display='block'; as.style.display='none'; ms.style.display='none'; renderTags(); }
+  else if (v==='stats') { document.getElementById('navStats').classList.add('active'); hv.style.display='block'; tv.style.display='none'; as.style.display='none'; ms.style.display='none'; showStats(); }
+}
+window.setView=setView;
+
+function switchTab(tab) { document.getElementById('tabText').classList.toggle('active',tab==='text'); document.getElementById('tabVoice').classList.toggle('active',tab==='voice'); document.getElementById('textPanel').style.display=tab==='text'?'block':'none'; document.getElementById('voicePanel').style.display=tab==='voice'?'block':'none'; }
+window.switchTab=switchTab;
+
+function updateStats() { document.getElementById('totalCount').textContent=entries.length; }
+
+window.resetApiKey = function() {
+  localStorage.removeItem('mv_glm_key');
+  toast('🔑 GLM ключ сброшен. Введи новый при следующем AI запросе.');
+};
+
+document.getElementById('exportBtn').onclick = () => {
+  const data=entries.map(e=>`# ${e.title}\n_${new Date(e.createdAt).toLocaleString('ru')}_\n\n${e.text}\n${e.summary?'\n**AI резюме:** '+e.summary:''}\n${e.tags.length?'\n**Теги:** '+e.tags.map(t=>'#'+t).join(' '):''}\n\n---`).join('\n\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([data],{type:'text/markdown'})); a.download='mindvault-export.md'; a.click();
+  toast('📥 Экспорт готов!');
+};
+
+document.getElementById('detailTitle').oninput=function(){autoResize(this);};
+document.getElementById('detailBody').oninput=function(){autoResize(this);};
+
+load(); renderEntries(); updateStats(); initVoice();
+
+// Register Service Worker for PWA / offline support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('SW registered:', reg.scope))
+      .catch(err => console.log('SW registration failed:', err));
+  });
+}
+
+// PDF.js
+(function(){ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'; s.onload=()=>{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}; document.head.appendChild(s); })();
+// Tesseract OCR
+(function(){ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'; document.head.appendChild(s); })();
+
+function finishTextExtract(text,filename,extra) {
+  const ta=document.getElementById('entryText');
+  document.getElementById('pdfLoading').style.display='none'; document.getElementById('ocrLoading').style.display='none';
+  ta.value=text.trim(); autoResize(ta);
+  if (!document.getElementById('tagInp').value) document.getElementById('tagInp').value='#скан';
+  document.getElementById('pdfInfoText').textContent=filename+(extra?' — '+extra:'')+', '+text.length+' символов';
+  document.getElementById('pdfInfo').classList.add('show'); toast('Текст извлечён!');
+}
+document.getElementById('pdfFileInp').onchange=async function(e) {
+  const file=e.target.files[0]; if(!file) return;
+  document.getElementById('pdfInfo').classList.remove('show');
+  const loading=document.getElementById('pdfLoading'); loading.style.display='block'; loading.textContent='📄 Извлекаю текст из PDF...';
+  try { const ab=await file.arrayBuffer(); const pdf=await pdfjsLib.getDocument({data:ab}).promise; let txt=''; for(let i=1;i<=pdf.numPages;i++){const p=await pdf.getPage(i);const c=await p.getTextContent();txt+=c.items.map(x=>x.str).join(' ')+' ';} if(!txt.trim()){toast('Пустой PDF — попробуй Скан/Фото');loading.style.display='none';return;} finishTextExtract(txt,file.name,pdf.numPages+' стр.'); } catch(err){toast('Ошибка PDF');loading.style.display='none';}
+  this.value='';
+};
+document.getElementById('ocrFileInp').onchange=async function(e) {
+  const file=e.target.files[0]; if(!file) return;
+  document.getElementById('pdfInfo').classList.remove('show');
+  const ocrL=document.getElementById('ocrLoading'),ocrP=document.getElementById('ocrProgress'); ocrL.style.display='block'; ocrP.textContent='0%';
+  try { if(typeof Tesseract==='undefined'){toast('Tesseract ещё загружается');ocrL.style.display='none';return;} const worker=await Tesseract.createWorker(['rus','eng'],1,{logger:m=>{if(m.status==='recognizing text')ocrP.textContent=Math.round(m.progress*100)+'%';}}); const{data:{text}}=await worker.recognize(file); await worker.terminate(); if(!text.trim()){toast('Текст не распознан');ocrL.style.display='none';return;} if(!document.getElementById('tagInp').value) document.getElementById('tagInp').value='#скан'; finishTextExtract(text,file.name,''); } catch(err){toast('Ошибка OCR: '+err.message);ocrL.style.display='none';}
+  this.value='';
+};
+</script>
+</body>
+</html>
