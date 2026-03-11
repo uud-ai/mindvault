@@ -3,6 +3,7 @@
   "short_name": "MindVault",
   "description": "Личная база знаний с AI — записи, теги, флэш-карточки",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f5efe6",
   "theme_color": "#8b4513",
