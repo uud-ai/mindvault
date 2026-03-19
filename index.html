@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="theme-color" content="#8b4513"/>
@@ -343,37 +343,41 @@ function getApiKey() {
 }
 
 // ── AI CALL ────────────────────────────────────────────────────────────────
-async function callClaude(prompt, system='') {
+async function callGLM(prompt, system='') {
   const apiKey = getApiKey();
   if (!apiKey) throw new Error('No API key');
-  const messages = [];
-  if (system) messages.push({role:'system', content: system});
-  messages.push({role:'user', content: prompt});
+  const body = {
+    model: MODEL,
+    max_tokens: 1000,
+    messages: [{role: 'user', content: prompt}]
+  };
+  // GLM принимает system как отдельное поле верхнего уровня
+  if (system) body.system = system;
   const r = await fetch(GLM_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + apiKey
     },
-    body: JSON.stringify({ model: MODEL, max_tokens: 1000, messages })
+    body: JSON.stringify(body)
   });
   if (!r.ok) {
-    if (r.status === 401) { localStorage.removeItem('mv_glm_key'); throw new Error('Неверный GLM ключ'); }
+    if (r.status === 401) { localStorage.removeItem('mv_glm_key'); throw new Error('Неверный GLM ключ — сброшен, введи заново'); }
     const errTxt = await r.text().catch(() => '');
-    throw new Error('API error ' + r.status + ': ' + errTxt.slice(0, 100));
+    throw new Error('API error ' + r.status + ': ' + errTxt.slice(0, 150));
   }
   const d = await r.json();
-  return d.choices?.[0]?.message?.content || '';
+  return d.choices?.[0]?.message?.content?.trim() || '';
 }
 
 async function summarizeText(text) {
-  return await callClaude(
+  return await callGLM(
     `Текст: "${text}"\n\nСделай краткое резюме (2-3 предложения) на русском языке. Выдели главную мысль и ключевые идеи. Только резюме, без преамбул.`,
     'Ты помогаешь создавать краткие и точные резюме для личной базы знаний.'
   );
 }
 async function generateTitle(text) {
-  return await callClaude(
+  return await callGLM(
     `Текст: "${text.slice(0,500)}"\n\nПридумай короткий, ёмкий заголовок (до 8 слов) на русском языке. Только заголовок, без кавычек.`,
     'Ты придумываешь заголовки для заметок.'
   );
@@ -443,10 +447,12 @@ document.getElementById('micRing').onclick = () => {
 };
 document.getElementById('voiceSummarizeBtn').onclick = async () => {
   if (!voiceText) { toast('Нет текста'); return; }
-  const btn=document.getElementById('voiceSummarizeBtn'); btn.disabled=true; progress(true,40);
-  const summary=await summarizeText(voiceText);
-  document.getElementById('voiceTranscript').innerHTML=esc(voiceText)+`<div class="entry-summary" style="margin-top:10px">${esc(summary)}</div>`;
-  progress(false); btn.disabled=false;
+  const btn=document.getElementById('voiceSummarizeBtn'); btn.disabled=true; btn.textContent='✦ ...'; progress(true,40);
+  try {
+    const summary=await summarizeText(voiceText);
+    document.getElementById('voiceTranscript').innerHTML=esc(voiceText)+`<div class="entry-summary" style="margin-top:10px">${esc(summary)}</div>`;
+  } catch(e) { toast('Ошибка AI: '+e.message); }
+  progress(false); btn.disabled=false; btn.innerHTML='✦ AI резюме';
 };
 document.getElementById('saveVoiceBtn').onclick = async () => {
   if (!voiceText) { toast('Нет текста'); return; }
@@ -466,10 +472,10 @@ document.getElementById('searchClear').onclick = () => { document.getElementById
 
 async function aiSearch(q) {
   if (!entries.length) return;
-  const ctx=entries.slice(0,15).map((e,i)=>`[${i+1}] "${e.title}": ${e.text.slice(0,300)}`).join('\n\n');
+  const ctx=entries.slice(0,30).map((e,i)=>`[${i+1}] "${e.title}": ${e.text.slice(0,200)}`).join('\n\n');
   progress(true,30);
   try {
-    const ans=await callClaude(`Вопрос: "${q}"\n\nМои записи:\n${ctx}\n\nОтветь на вопрос используя мои записи. Укажи номера [N] источников. Кратко, по существу.`,'Ты умный поисковик по личной базе знаний. Отвечай на русском, кратко и точно.');
+    const ans=await callGLM(`Вопрос: "${q}"\n\nМои записи:\n${ctx}\n\nОтветь на вопрос используя мои записи. Укажи номера [N] источников. Кратко, по существу.`,'Ты умный поисковик по личной базе знаний. Отвечай на русском, кратко и точно.');
     progress(true,90); showAiAnswer(ans,q);
   } catch(e) { toast('Ошибка AI: '+e.message); }
   progress(false);
@@ -531,7 +537,7 @@ async function sendChat() {
   const msgs=document.getElementById('chatMessages');
   const ub=document.createElement('div'); ub.className='chat-msg user'; ub.textContent=q; msgs.appendChild(ub);
   const tb=document.createElement('div'); tb.className='chat-msg ai'; tb.innerHTML='<div class="thinking"><div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div></div>'; msgs.appendChild(tb); msgs.scrollTop=msgs.scrollHeight;
-  try { const ans=await callClaude(`Запись: "${curEntry.title}"\n\nТекст: "${curEntry.text}"\n\nВопрос: "${q}"\n\nОтветь, опираясь на содержание записи.`,'Ты помогаешь осмыслить личные заметки. Отвечай кратко, по-русски, в дружеском тоне.'); tb.innerHTML=ans; }
+  try { const ans=await callGLM(`Запись: "${curEntry.title}"\n\nТекст: "${curEntry.text}"\n\nВопрос: "${q}"\n\nОтветь, опираясь на содержание записи.`,'Ты помогаешь осмыслить личные заметки. Отвечай кратко, по-русски, в дружеском тоне.'); tb.innerHTML=ans; }
   catch(e) { tb.textContent='Ошибка: '+e.message; }
   msgs.scrollTop=msgs.scrollHeight;
 }
@@ -544,7 +550,7 @@ async function generateCards() {
   if (!curEntry) return;
   const btn=document.getElementById('genCardsBtn'); btn.disabled=true; btn.textContent='✦ Генерирую...'; progress(true,30);
   try {
-    const result=await callClaude(`Текст: "${curEntry.text.slice(0,2000)}"\n\nСоздай 6-8 флэш-карточек.\nФормат JSON:\n[{"q":"вопрос","a":"ответ"}]\nТолько JSON, без пояснений.`,'Создаёшь флэш-карточки. Только JSON.');
+    const result=await callGLM(`Текст: "${curEntry.text.slice(0,2000)}"\n\nСоздай 6-8 флэш-карточек.\nФормат JSON:\n[{"q":"вопрос","a":"ответ"}]\nТолько JSON, без пояснений.`,'Создаёшь флэш-карточки. Только JSON.');
     const clean=result.replace(/```json|```/g,'').trim();
     curCards=JSON.parse(clean); cardsKnown=new Set(); curEntry.cards=curCards; save(); renderCards(); progress(false);
   } catch(e) { toast('Ошибка: '+e.message); progress(false); }
@@ -618,7 +624,7 @@ if ('serviceWorker' in navigator) {
 // PDF.js
 (function(){ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js'; s.onload=()=>{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}; document.head.appendChild(s); })();
 // Tesseract OCR
-(function(){ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'; document.head.appendChild(s); })();
+(function(){ const s=document.createElement('script'); s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'; s.onload=()=>{ window._tesseractReady=true; }; document.head.appendChild(s); })();
 
 function finishTextExtract(text,filename,extra) {
   const ta=document.getElementById('entryText');
@@ -639,7 +645,7 @@ document.getElementById('ocrFileInp').onchange=async function(e) {
   const file=e.target.files[0]; if(!file) return;
   document.getElementById('pdfInfo').classList.remove('show');
   const ocrL=document.getElementById('ocrLoading'),ocrP=document.getElementById('ocrProgress'); ocrL.style.display='block'; ocrP.textContent='0%';
-  try { if(typeof Tesseract==='undefined'){toast('Tesseract ещё загружается');ocrL.style.display='none';return;} const worker=await Tesseract.createWorker(['rus','eng'],1,{logger:m=>{if(m.status==='recognizing text')ocrP.textContent=Math.round(m.progress*100)+'%';}}); const{data:{text}}=await worker.recognize(file); await worker.terminate(); if(!text.trim()){toast('Текст не распознан');ocrL.style.display='none';return;} if(!document.getElementById('tagInp').value) document.getElementById('tagInp').value='#скан'; finishTextExtract(text,file.name,''); } catch(err){toast('Ошибка OCR: '+err.message);ocrL.style.display='none';}
+  try { if(!window._tesseractReady){toast('Tesseract ещё загружается, подожди пару секунд');ocrL.style.display='none';return;} const worker=await Tesseract.createWorker(['rus','eng'],1,{logger:m=>{if(m.status==='recognizing text')ocrP.textContent=Math.round(m.progress*100)+'%';}}); const{data:{text}}=await worker.recognize(file); await worker.terminate(); if(!text.trim()){toast('Текст не распознан');ocrL.style.display='none';return;} if(!document.getElementById('tagInp').value) document.getElementById('tagInp').value='#скан'; finishTextExtract(text,file.name,''); } catch(err){toast('Ошибка OCR: '+err.message);ocrL.style.display='none';}
   this.value='';
 };
 </script>
